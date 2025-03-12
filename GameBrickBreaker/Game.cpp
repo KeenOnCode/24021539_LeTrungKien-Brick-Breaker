@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include <iostream>
 
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {}
@@ -37,8 +37,9 @@ void Game::handleEvents() {
 
 void Game::update() {
     paddle->update();
-    ball->update();
+    ball->update(*paddle, running);
 }
+
 
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

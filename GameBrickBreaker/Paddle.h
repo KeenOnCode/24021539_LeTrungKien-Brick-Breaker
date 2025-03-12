@@ -1,4 +1,4 @@
-#ifndef PADDLE_H
+﻿#ifndef PADDLE_H
 #define PADDLE_H
 
 #include <SDL.h>
@@ -11,6 +11,7 @@ public:
     void handleEvent(SDL_Event& e);
     void update();
     void render();
+    SDL_Rect getRect() { return paddleRect; } // Thêm phương thức này
 
 private:
     SDL_Renderer* renderer;
