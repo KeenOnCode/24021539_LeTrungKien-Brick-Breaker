@@ -1,0 +1,9 @@
+x64/
+.vs/
+*.exe
+*.pdb
+*.ilk
+*.obj
+*.log
+*.user
+*.cache
