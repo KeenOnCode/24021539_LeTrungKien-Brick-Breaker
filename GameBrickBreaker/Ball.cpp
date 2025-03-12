@@ -31,3 +31,12 @@ void Ball::render() {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &ballRect);
 }
+
+// === Thêm 2 hàm này vào cuối file ===
+SDL_Rect Ball::getRect() const {
+    return ballRect;
+}
+
+void Ball::bounce() {
+    velocityY = -velocityY;
+}

@@ -8,15 +8,23 @@ public:
     Paddle(SDL_Renderer* renderer);
     ~Paddle();
 
-    void handleEvent(SDL_Event& e);
+    // Xử lý phím bấm để di chuyển
+    void handleEvent(const SDL_Event& e);
+
+    // Cập nhật vị trí paddle
     void update();
+
+    // Vẽ paddle lên màn hình
     void render();
-    SDL_Rect getRect() { return paddleRect; } // Thêm phương thức này
+
+    // Lấy hitbox (khung chữ nhật) của paddle
+    SDL_Rect getRect() const;
 
 private:
     SDL_Renderer* renderer;
     SDL_Rect paddleRect;
-    int velocity;
+    int speed;         // Tốc độ di chuyển paddle
+    int moveDirection; // -1: sang trái, +1: sang phải, 0: đứng yên
 };
 
 #endif

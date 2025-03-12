@@ -1,4 +1,4 @@
-#ifndef BALL_H
+﻿#ifndef BALL_H
 #define BALL_H
 
 #include <SDL.h>
@@ -11,6 +11,10 @@ public:
 
     void update(Paddle& paddle, bool& running);
     void render();
+
+    
+    SDL_Rect getRect() const;  // Lấy hitbox của bóng
+    void bounce();             // Xử lý va chạm với gạch
 
 private:
     SDL_Renderer* renderer;

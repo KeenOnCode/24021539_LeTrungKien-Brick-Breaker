@@ -1,4 +1,5 @@
 ﻿#include "Game.h"
+#include "Brick.h"
 #include <iostream>
 
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {}
@@ -22,8 +23,24 @@ bool Game::init() {
     paddle = new Paddle(renderer);
     ball = new Ball(renderer);
 
+    initBricks(); // Khởi tạo gạch
+
     running = true;
     return true;
+}
+
+void Game::initBricks() {
+    int rows = 5;
+    int cols = 10;
+    int brickWidth = SCREEN_WIDTH / cols;
+    int brickHeight = 30;
+
+    for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
+            Brick::BrickType type = (row % 2 == 0) ? Brick::BrickType::ONE_HIT : Brick::BrickType::TWO_HIT;
+            bricks.emplace_back(col * brickWidth, row * brickHeight, brickWidth - 5, brickHeight - 5, type);
+        }
+    }
 }
 
 void Game::handleEvents() {
@@ -38,8 +55,17 @@ void Game::handleEvents() {
 void Game::update() {
     paddle->update();
     ball->update(*paddle, running);
-}
 
+    for (auto& brick : bricks) {
+        SDL_Rect ballRect = ball->getRect();
+        SDL_Rect brickRect = brick.GetRect();
+        if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
+
+            ball->bounce();
+            brick.Hit();
+        }
+    }
+}
 
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -47,6 +73,10 @@ void Game::render() {
 
     paddle->render();
     ball->render();
+
+    for (auto& brick : bricks) {
+        brick.Render(renderer);
+    }
 
     SDL_RenderPresent(renderer);
 }
