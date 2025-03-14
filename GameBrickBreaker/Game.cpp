@@ -5,8 +5,9 @@
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {}
 
 Game::~Game() {
-    clean();
+    // Không gọi clean() nữa, vì nó có thể đã được gọi trước đó
 }
+
 
 bool Game::init() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -82,12 +83,25 @@ void Game::render() {
 }
 
 void Game::clean() {
-    delete paddle;
-    delete ball;
-    if (renderer) SDL_DestroyRenderer(renderer);
-    if (window) SDL_DestroyWindow(window);
+    if (paddle) {
+        delete paddle;
+        paddle = nullptr;
+    }
+    if (ball) {
+        delete ball;
+        ball = nullptr;
+    }
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
+    if (window) {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
     SDL_Quit();
 }
+
 
 void Game::run() {
     while (running) {
