@@ -1,10 +1,27 @@
 ﻿#include "Ball.h"
-
+#include <SDL_image.h>
+#include <iostream>
 Ball::Ball(SDL_Renderer* renderer) : renderer(renderer), velocityX(3), velocityY(-3) {
-    ballRect = { 390, 530, 15, 15 };
+    ballRect = { 390, 530, 40, 40 };
+    LoadTexture(renderer);
 }
 
-Ball::~Ball() {}
+Ball::~Ball() {
+    if (ballTexture) {
+        SDL_DestroyTexture(ballTexture);
+        ballTexture = nullptr;
+    }
+}
+
+void Ball::LoadTexture(SDL_Renderer* renderer) {
+    SDL_Surface* ballSurface = IMG_Load("assets/image/model/nhanVat.png");
+    if (!ballSurface) {
+        std::cout << "Failed to load ball image: " << IMG_GetError() << std::endl;
+        return;
+    }
+    ballTexture = SDL_CreateTextureFromSurface(renderer, ballSurface);
+    SDL_FreeSurface(ballSurface);
+}
 
 void Ball::update(Paddle& paddle, bool& running) {
     ballRect.x += velocityX;
@@ -28,9 +45,16 @@ void Ball::update(Paddle& paddle, bool& running) {
 }
 
 void Ball::render() {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &ballRect);
+    if (ballTexture) {
+        SDL_RenderCopy(renderer, ballTexture, nullptr, &ballRect);
+    }
+    else {
+        std::cout << "⚠️ Ball texture is NULL, rendering red box instead!" << std::endl;
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(renderer, &ballRect);
+    }
 }
+
 
 // === Thêm 2 hàm này vào cuối file ===
 SDL_Rect Ball::getRect() const {

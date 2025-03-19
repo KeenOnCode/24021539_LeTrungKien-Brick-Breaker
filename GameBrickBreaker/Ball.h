@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 #include "Paddle.h"
-
+#include <SDL_image.h>
 class Ball {
 public:
     Ball(SDL_Renderer* renderer);
@@ -15,8 +15,9 @@ public:
     
     SDL_Rect getRect() const;  // Lấy hitbox của bóng
     void bounce();             // Xử lý va chạm với gạch
-
+    void LoadTexture(SDL_Renderer* renderer); // Hàm load ảnh bóng
 private:
+    SDL_Texture* ballTexture; // ✅ Biến chứa ảnh quả bóng
     SDL_Renderer* renderer;
     SDL_Rect ballRect;
     int velocityX, velocityY;
