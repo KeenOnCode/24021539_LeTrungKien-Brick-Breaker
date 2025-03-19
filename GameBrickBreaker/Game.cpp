@@ -1,6 +1,8 @@
 ﻿#include "Game.h"
 #include "Brick.h"
 #include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
 
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {}
 
@@ -21,6 +23,7 @@ bool Game::init() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) return false;
 
+	LoadBackground(renderer);
     paddle = new Paddle(renderer);
     ball = new Ball(renderer);
 
@@ -71,7 +74,7 @@ void Game::update() {
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-
+	RenderBackground(renderer);
     paddle->render();
     ball->render();
 
@@ -111,4 +114,31 @@ void Game::run() {
         SDL_Delay(16);
     }
     clean();
+}
+
+
+
+SDL_Texture* backgroundTexture = nullptr;
+
+void Game::LoadBackground(SDL_Renderer* renderer) {
+    SDL_Surface* bgSurface = IMG_Load("assets/image/background/AnhNen.png");
+    if (!bgSurface) {
+        printf("Failed to load background image: %s\n", IMG_GetError());
+        return;
+    }
+    backgroundTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
+    SDL_FreeSurface(bgSurface);
+}
+
+void Game::RenderBackground(SDL_Renderer* renderer) {
+    if (backgroundTexture) {
+        SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    }
+}
+
+void Game::CleanupBackground() {
+    if (backgroundTexture) {
+        SDL_DestroyTexture(backgroundTexture);
+        backgroundTexture = nullptr;
+    }
 }

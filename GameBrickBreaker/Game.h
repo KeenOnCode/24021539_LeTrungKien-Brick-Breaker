@@ -1,4 +1,4 @@
-﻿#ifndef GAME_H
+#ifndef GAME_H
 #define GAME_H
 
 #include <SDL.h>
@@ -21,6 +21,9 @@ public:
     void render();
     void clean();
     void run();
+    void LoadBackground(SDL_Renderer* renderer);
+    void RenderBackground(SDL_Renderer* renderer);
+    void CleanupBackground();
 
 private:
     SDL_Window* window;
