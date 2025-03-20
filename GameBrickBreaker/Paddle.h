@@ -21,8 +21,10 @@ public:
     SDL_Rect getRect() const;
 
 private:
+    SDL_Texture* paddleTexture;
     SDL_Renderer* renderer;
     SDL_Rect paddleRect;
+    void LoadTexture(SDL_Renderer* renderer);
     int speed;         // Tốc độ di chuyển paddle
     int moveDirection; // -1: sang trái, +1: sang phải, 0: đứng yên
 };
