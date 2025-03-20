@@ -9,7 +9,7 @@ public:
     Ball(SDL_Renderer* renderer);
     ~Ball();
 
-    void update(Paddle& paddle, bool& running);
+    void update(Paddle& paddle, bool& running,int &lives);
     void render();
 
     

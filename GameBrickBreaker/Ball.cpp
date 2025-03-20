@@ -1,6 +1,7 @@
 ﻿#include "Ball.h"
 #include <SDL_image.h>
 #include <iostream>
+#include "Game.h"
 Ball::Ball(SDL_Renderer* renderer) : renderer(renderer), velocityX(3), velocityY(-3) {
     ballRect = { 390, 530, 40, 40 };
     LoadTexture(renderer);
@@ -23,7 +24,7 @@ void Ball::LoadTexture(SDL_Renderer* renderer) {
     SDL_FreeSurface(ballSurface);
 }
 
-void Ball::update(Paddle& paddle, bool& running) {
+void Ball::update(Paddle& paddle, bool& running,int &lives) {
     ballRect.x += velocityX;
     ballRect.y += velocityY;
 
@@ -40,8 +41,19 @@ void Ball::update(Paddle& paddle, bool& running) {
 
     // Kiểm tra bóng rơi xuống dưới paddle
     if (ballRect.y + ballRect.h >= 600) {
-        running = false; // Kết thúc game
+        lives--; // Mất 1 mạng
+        if (lives <= 0) {
+            running = false; // Hết mạng thì kết thúc game
+        }
+        else {
+            // Đặt lại vị trí bóng để tiếp tục chơi
+            ballRect.x = paddle.getX() + paddle.getWidth() / 2 - ballRect.w / 2;
+            ballRect.y = paddle.getY() - ballRect.h - 5; // Cách paddle 5px
+            velocityX = 3;
+            velocityY = -3;
+        }
     }
+
 }
 
 void Ball::render() {

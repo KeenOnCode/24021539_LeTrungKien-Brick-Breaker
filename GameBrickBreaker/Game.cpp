@@ -4,7 +4,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {}
+Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {
+    lives = 3; // Bắt đầu với 3 mạng
+    
+    
+}
 
 Game::~Game() {
     // Không gọi clean() nữa, vì nó có thể đã được gọi trước đó
@@ -28,7 +32,7 @@ bool Game::init() {
     ball = new Ball(renderer);
 
     initBricks(); // Khởi tạo gạch
-
+    heartTexture = IMG_LoadTexture(renderer, "assets/image/gameOver/heart.png");
     running = true;
     return true;
 }
@@ -58,7 +62,7 @@ void Game::handleEvents() {
 
 void Game::update() {
     paddle->update();
-    ball->update(*paddle, running);
+    ball->update(*paddle, running, lives);
 
     for (auto& brick : bricks) {
         SDL_Rect ballRect = ball->getRect();
@@ -81,7 +85,7 @@ void Game::render() {
     for (auto& brick : bricks) {
         brick.Render(renderer);
     }
-
+    renderHearts(); // Vẽ số mạng lên màn hình
     SDL_RenderPresent(renderer);
 }
 
@@ -101,6 +105,10 @@ void Game::clean() {
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
+    }
+    if (heartTexture) {
+        SDL_DestroyTexture(heartTexture);
+        heartTexture = nullptr;
     }
     SDL_Quit();
 }
@@ -142,3 +150,10 @@ void Game::CleanupBackground() {
         backgroundTexture = nullptr;
     }
 }
+void Game::renderHearts() {
+    for (int i = 0; i < lives; i++) {
+        SDL_Rect heartRect = { 20 + i * 40, 10, 30, 30 }; // Cách đều 40px
+        SDL_RenderCopy(renderer, heartTexture, NULL, &heartRect);
+    }
+}
+

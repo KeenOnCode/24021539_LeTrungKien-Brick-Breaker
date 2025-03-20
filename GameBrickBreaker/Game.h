@@ -26,14 +26,16 @@ public:
     void CleanupBackground();
 
 private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    bool running;
+	SDL_Window* window; // ✅ Thêm biến window
+	SDL_Renderer* renderer; // ✅ Thêm biến renderer
+	bool running;   // Trạng thái game đang chạy hay không
 
-    Paddle* paddle;
-    Ball* ball;
+	Paddle* paddle; // ✅ Thêm biến thanh chắn
+	Ball* ball; // ✅ Thêm biến quả bóng
     std::vector<Brick> bricks; // Danh sách gạch
-
+	int lives; // Số mạng còn lại
+	SDL_Texture* heartTexture; // Ảnh mạng
+	void renderHearts(); // Vẽ mạng
     void initBricks(); // Hàm khởi tạo gạch
 };
 

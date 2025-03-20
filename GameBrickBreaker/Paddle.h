@@ -19,6 +19,9 @@ public:
 
     // Lấy hitbox (khung chữ nhật) của paddle
     SDL_Rect getRect() const;
+    int getX() const { return paddleRect.x; }
+    int getY() const { return paddleRect.y; }
+    int getWidth() const { return paddleRect.w; }
 
 private:
     SDL_Texture* paddleTexture;
