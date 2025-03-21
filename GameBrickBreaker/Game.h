@@ -6,7 +6,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Brick.h"
-
+#include <SDL_ttf.h>
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
@@ -26,6 +26,10 @@ public:
     void CleanupBackground();
 
 private:
+    int score; // Điểm số
+    TTF_Font* font; // Font chữ để hiển thị điểm
+    SDL_Texture* scoreTexture; // Texture để vẽ điểm số
+    void updateScoreTexture(); // Cập nhật điểm số
 	SDL_Window* window; // ✅ Thêm biến window
 	SDL_Renderer* renderer; // ✅ Thêm biến renderer
 	bool running;   // Trạng thái game đang chạy hay không
