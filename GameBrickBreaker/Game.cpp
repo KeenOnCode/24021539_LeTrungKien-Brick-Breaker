@@ -57,22 +57,32 @@ bool Game::init() {
 
 void Game::initBricks() {
     bricks.clear();
-    srand(static_cast<unsigned>(time(0))); // Khởi tạo random seed
+    srand(static_cast<unsigned>(time(0)));
 
-    int rows = 5;  // Số hàng gạch
-    int cols = 8;  // Số cột gạch
-    int brickWidth = SCREEN_WIDTH / cols;
+    // Load texture mẫu — bạn có thể chỉnh đường dẫn sau
+    SDL_Texture* oneHitBrickTex = IMG_LoadTexture(renderer, "assets/image/model/brick1hit.png");
+    SDL_Texture* twoHitBrickFullTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_full.png");
+    SDL_Texture* twoHitBrickCrackedTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_cracked.png");
+
+    int rows = 5;
+    int cols = 8;
+    int brickWidth = SCREEN_WIDTH / cols - 5;
     int brickHeight = 30;
-    int startY = 50; // Khoảng cách từ trên xuống
+    int startY = 50;
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            int x = j * brickWidth;
-            int y = startY + i * brickHeight;
+            int x = j * (brickWidth + 5);
+            int y = startY + i * (brickHeight + 5);
 
-            // Random loại gạch: 50% ONE_HIT, 50% TWO_HIT
-            Brick::BrickType type = (rand() % 2 == 0) ? Brick::BrickType::ONE_HIT : Brick::BrickType::TWO_HIT;
-            bricks.emplace_back(x, y, brickWidth - 5, brickHeight - 5, type); // Giảm kích thước để tạo khoảng cách
+            if (rand() % 2 == 0) {
+                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::ONE_HIT,
+                    oneHitBrickTex);
+            }
+            else {
+                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::TWO_HIT,
+                    nullptr, twoHitBrickFullTex, twoHitBrickCrackedTex);
+            }
         }
     }
 }

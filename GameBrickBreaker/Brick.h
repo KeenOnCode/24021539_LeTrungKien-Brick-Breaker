@@ -2,7 +2,7 @@
 #define BRICK_H
 
 #include <SDL.h>
-#include "Ball.h" // Thêm dòng này
+#include "Ball.h"
 
 class Brick {
 public:
@@ -11,21 +11,27 @@ public:
         TWO_HIT
     };
 
-    Brick(int x, int y, int width, int height, BrickType type);
+    Brick(int x, int y, int width, int height, BrickType type,
+        SDL_Texture* oneHitTexture = nullptr,
+        SDL_Texture* twoHitFullTexture = nullptr,
+        SDL_Texture* twoHitCrackedTexture = nullptr);
 
     void Render(SDL_Renderer* renderer);
-    bool Hit(); // Trả về true nếu gạch bị phá hủy hoàn toàn
+    bool Hit();
 
     SDL_Rect GetRect() const;
     bool IsDestroyed() const;
-
-    bool CheckCollision(const Ball& ball); // Thêm hàm kiểm tra va chạm
+    bool CheckCollision(const Ball& ball);
 
 private:
     SDL_Rect rect;
     BrickType type;
-    int hitPoints; // Số lần chạm trước khi vỡ
+    int hitPoints;
     bool destroyed;
+
+    SDL_Texture* oneHitTexture;
+    SDL_Texture* twoHitFullTexture;
+    SDL_Texture* twoHitCrackedTexture;
 };
 
 #endif
