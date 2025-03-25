@@ -10,10 +10,15 @@ void Brick::Render(SDL_Renderer* renderer) {
 
     // Đặt màu theo loại gạch
     if (type == BrickType::ONE_HIT) {
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Đỏ
+        SDL_SetRenderDrawColor(renderer, 0,255, 0, 255); // Đỏ
     }
     else {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Xanh dương
+        if (hitPoints == 2) {
+            SDL_SetRenderDrawColor(renderer, 255, 175, 0, 255); // Vàng
+        }
+        else {
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Cam
+        }
     }
 
     SDL_RenderFillRect(renderer, &rect);

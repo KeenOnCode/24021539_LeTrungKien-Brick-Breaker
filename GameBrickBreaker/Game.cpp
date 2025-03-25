@@ -4,6 +4,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include <cstdlib>  // Thêm thư viện để sử dụng rand()
+#include <ctime>    // Thêm thư viện để sử dụng time()
+
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr) {
     lives = 3; // Bắt đầu với 3 mạng
     score = 0; // Khởi tạo điểm số
@@ -13,7 +16,7 @@ Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullpt
         std::cout << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
     }
 
-    font = TTF_OpenFont("assets/font/VT323-Regular.ttf", 20); // Chọn font chữ
+    font = TTF_OpenFont("assets/font/CookieCrisp-L36ly.ttf", 20); // Chọn font chữ
     if (!font) {
         std::cout << "Failed to load font: " << TTF_GetError() << std::endl;
     }
@@ -53,15 +56,23 @@ bool Game::init() {
 }
 
 void Game::initBricks() {
-    int rows = 5;
-    int cols = 10;
+    bricks.clear();
+    srand(static_cast<unsigned>(time(0))); // Khởi tạo random seed
+
+    int rows = 5;  // Số hàng gạch
+    int cols = 8;  // Số cột gạch
     int brickWidth = SCREEN_WIDTH / cols;
     int brickHeight = 30;
+    int startY = 50; // Khoảng cách từ trên xuống
 
-    for (int row = 0; row < rows; ++row) {
-        for (int col = 0; col < cols; ++col) {
-            Brick::BrickType type = (row % 2 == 0) ? Brick::BrickType::ONE_HIT : Brick::BrickType::TWO_HIT;
-            bricks.emplace_back(col * brickWidth, row * brickHeight, brickWidth - 5, brickHeight - 5, type);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            int x = j * brickWidth;
+            int y = startY + i * brickHeight;
+
+            // Random loại gạch: 50% ONE_HIT, 50% TWO_HIT
+            Brick::BrickType type = (rand() % 2 == 0) ? Brick::BrickType::ONE_HIT : Brick::BrickType::TWO_HIT;
+            bricks.emplace_back(x, y, brickWidth - 5, brickHeight - 5, type); // Giảm kích thước để tạo khoảng cách
         }
     }
 }
@@ -82,15 +93,22 @@ void Game::update() {
     for (auto& brick : bricks) {
         SDL_Rect ballRect = ball->getRect();
         SDL_Rect brickRect = brick.GetRect();
-        if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
 
+        if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
             ball->bounce();
-            brick.Hit();
-            score += 100; // Mỗi gạch cộng 10 điểm
-            updateScoreTexture(); // Cập nhật điểm số trên màn hình
+
+            // Gọi hàm Hit() để làm giảm hitPoints của gạch
+            bool destroyed = brick.Hit();
+
+            // Chỉ cộng điểm nếu gạch bị phá hoàn toàn
+            if (destroyed) {
+                score += 100; // Chỉ khi gạch bị phá hủy hoàn toàn mới cộng điểm
+                updateScoreTexture(); // Cập nhật điểm số hiển thị
+            }
         }
     }
 }
+
 
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

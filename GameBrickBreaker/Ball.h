@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include "Paddle.h"
 #include <SDL_image.h>
+#include <cstdlib> 
+
 class Ball {
 public:
     Ball(SDL_Renderer* renderer);

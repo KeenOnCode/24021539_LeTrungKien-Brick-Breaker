@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Game.h"
 Ball::Ball(SDL_Renderer* renderer) : renderer(renderer), velocityX(3), velocityY(-3) {
-    ballRect = { 390, 530, 40, 40 };
+    ballRect = { 390, 530, 20,20 };
     LoadTexture(renderer);
 }
 
