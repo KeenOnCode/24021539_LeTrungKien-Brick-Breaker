@@ -1,11 +1,11 @@
 ﻿#include "Brick.h"
+#include <random>
 
-Brick::Brick(int x, int y, int width, int height, BrickType type,
-    SDL_Texture* oneHitTexture, SDL_Texture* twoHitFullTexture, SDL_Texture* twoHitCrackedTexture)
-    : rect{ x, y, width, height }, type(type), destroyed(false),
-    oneHitTexture(oneHitTexture), twoHitFullTexture(twoHitFullTexture), twoHitCrackedTexture(twoHitCrackedTexture) {
-
+Brick::Brick(int x, int y, int width, int height, BrickType type, SDL_Texture* oneHitTexture, SDL_Texture* twoHitFullTexture, SDL_Texture* twoHitCrackedTexture)
+    : rect{ x, y, width, height }, type(type), destroyed(false), oneHitTexture(oneHitTexture), twoHitFullTexture(twoHitFullTexture), twoHitCrackedTexture(twoHitCrackedTexture) {
     hitPoints = (type == BrickType::TWO_HIT) ? 2 : 1;
+    hasPowerUp = (rand() % 2 == 0);
+    powerUpType = static_cast<PowerUp::Type>(rand() % 6);
 }
 
 void Brick::Render(SDL_Renderer* renderer) {
@@ -41,7 +41,10 @@ bool Brick::IsDestroyed() const {
     return destroyed;
 }
 
-bool Brick::CheckCollision(const Ball& ball) {
-    SDL_Rect ballRect = ball.getRect();
-    return SDL_HasIntersection(&rect, &ballRect);
+bool Brick::shouldDropPowerUp() const {
+    return hasPowerUp;
+}
+
+PowerUp::Type Brick::getPowerUpType() const {
+    return powerUpType;
 }

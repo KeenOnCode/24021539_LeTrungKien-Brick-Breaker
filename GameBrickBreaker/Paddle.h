@@ -1,35 +1,36 @@
-﻿#ifndef PADDLE_H
-#define PADDLE_H
-
+﻿#pragma once
 #include <SDL.h>
+#include <vector>
+#include "Bullet.h"
+#include "PowerUp.h"
+#include <string>
+#include <chrono>
 
 class Paddle {
 public:
     Paddle(SDL_Renderer* renderer);
     ~Paddle();
-
-    // Xử lý phím bấm để di chuyển
     void handleEvent(const SDL_Event& e);
-
-    // Cập nhật vị trí paddle
     void update();
-
-    // Vẽ paddle lên màn hình
     void render();
-
-    // Lấy hitbox (khung chữ nhật) của paddle
     SDL_Rect getRect() const;
-    int getX() const { return paddleRect.x; }
-    int getY() const { return paddleRect.y; }
-    int getWidth() const { return paddleRect.w; }
+    void applyPowerUp(PowerUp::Type type);
+    void shoot();
+    std::vector<Bullet>& getBullets();
 
 private:
-    SDL_Texture* paddleTexture;
     SDL_Renderer* renderer;
     SDL_Rect paddleRect;
-    void LoadTexture(SDL_Renderer* renderer);
-    int speed;         // Tốc độ di chuyển paddle
-    int moveDirection; // -1: sang trái, +1: sang phải, 0: đứng yên
-};
+    SDL_Texture* paddleTexture;
+    int speed;
+    int moveDirection;
+    bool hasGun;
+    std::vector<Bullet> bullets;
 
-#endif
+    PowerUp::Type currentPowerUp;
+    std::chrono::time_point<std::chrono::steady_clock> powerUpStartTime;
+    int powerUpDuration; // in seconds
+
+    void loadTexture(const std::string& path);
+    void resetPowerUp();
+};

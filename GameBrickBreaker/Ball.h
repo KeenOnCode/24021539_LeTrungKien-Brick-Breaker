@@ -1,28 +1,19 @@
-﻿#ifndef BALL_H
-#define BALL_H
-
+﻿#pragma once
 #include <SDL.h>
 #include "Paddle.h"
-#include <SDL_image.h>
-#include <cstdlib> 
 
 class Ball {
 public:
     Ball(SDL_Renderer* renderer);
     ~Ball();
-
-    void update(Paddle& paddle, bool& running,int &lives);
+    void update(Paddle& paddle, bool& running, int& lives);
     void render();
+    SDL_Rect getRect() const;
+    void bounce();
 
-    
-    SDL_Rect getRect() const;  // Lấy hitbox của bóng
-    void bounce();             // Xử lý va chạm với gạch
-    void LoadTexture(SDL_Renderer* renderer); // Hàm load ảnh bóng
 private:
-    SDL_Texture* ballTexture; // ✅ Biến chứa ảnh quả bóng
     SDL_Renderer* renderer;
     SDL_Rect ballRect;
+    SDL_Texture* ballTexture;
     int velocityX, velocityY;
 };
-
-#endif
