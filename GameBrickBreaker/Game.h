@@ -42,6 +42,7 @@ private:
     SDL_Texture* backgroundTexture;
     static const int SCREEN_WIDTH = 800;
     static const int SCREEN_HEIGHT = 600;
+
     // Thêm các biến cho nút "Pause"
     SDL_Texture* pauseTexture;
     SDL_Rect pauseRect;
@@ -54,7 +55,13 @@ private:
     SDL_Rect restartRect;
     bool isGameOver;
 
+    // Thêm biến cho logo game
+    SDL_Texture* logoTexture;
+    SDL_Rect logoRect;
+
     void loadGameOverTextures(SDL_Renderer* renderer);
     void renderGameOver();
     void handlePauseEvent(const SDL_Event& e);
+    void loadLogoTexture(SDL_Renderer* renderer);
 };
+

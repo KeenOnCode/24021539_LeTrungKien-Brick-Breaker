@@ -56,6 +56,7 @@ bool Game::init() {
     pauseRect = { 750, 10, 40, 40 }; // Vị trí và kích thước của nút "Pause"
 
     loadGameOverTextures(renderer);
+    loadLogoTexture(renderer);
     running = true;
     return true;
 }
@@ -110,6 +111,9 @@ void Game::handlePauseEvent(const SDL_Event& e) {
             isPaused = !isPaused;
         }
     }
+    else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE) {
+        isPaused = !isPaused;
+    }
 }
 
 void Game::update() {
@@ -117,6 +121,11 @@ void Game::update() {
 
     paddle->update();
     ball->update(*paddle, running, lives);
+
+    if (lives <= 0) {
+        isGameOver = true;
+        return;
+    }
 
     for (auto& brick : bricks) {
         SDL_Rect ballRect = ball->getRect();
@@ -199,6 +208,13 @@ void Game::render() {
         SDL_RenderCopy(renderer, pauseTexture, NULL, &pauseRect);
     }
 
+    // Hiển thị logo game nếu game đang tạm dừng
+    if (isPaused) {
+        if (logoTexture) {
+            SDL_RenderCopy(renderer, logoTexture, nullptr, &logoRect);
+        }
+    }
+
     // Hiển thị màn hình "Game Over" nếu game kết thúc
     if (isGameOver) {
         renderGameOver();
@@ -231,6 +247,10 @@ void Game::clean() {
     if (pauseTexture) {
         SDL_DestroyTexture(pauseTexture);
         pauseTexture = nullptr;
+    }
+    if (logoTexture) {
+        SDL_DestroyTexture(logoTexture);
+        logoTexture = nullptr;
     }
     if (scoreTexture) SDL_DestroyTexture(scoreTexture);
     if (font) TTF_CloseFont(font);
@@ -321,3 +341,16 @@ void Game::renderGameOver() {
         SDL_RenderCopy(renderer, restartTexture, nullptr, &restartRect);
     }
 }
+
+void Game::loadLogoTexture(SDL_Renderer* renderer) {
+    SDL_Surface* surface = IMG_Load("assets/image/gameOver/logo.png");
+    if (!surface) {
+        std::cout << "❌ Failed to load logo image: " << IMG_GetError() << std::endl;
+        return;
+    }
+    logoTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    logoRect = { 200, 150,600 , 200 }; // Vị trí và kích thước của logo game
+}
+
