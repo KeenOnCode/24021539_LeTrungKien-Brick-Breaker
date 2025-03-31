@@ -1,12 +1,14 @@
-﻿#pragma once
+﻿#ifndef GAME_H
+#define GAME_H
+
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <vector>
-#include "Brick.h"
 #include "Paddle.h"
 #include "Ball.h"
+#include "Brick.h"
 #include "PowerUp.h"
-#include "Bullet.h"
 
 class Game {
 public:
@@ -14,19 +16,12 @@ public:
     ~Game();
     bool init();
     void run();
-    void clean();
-
-private:
     void handleEvents();
     void update();
     void render();
-    void initBricks();
-    void LoadBackground(SDL_Renderer* renderer);
-    void RenderBackground(SDL_Renderer* renderer);
-    void CleanupBackground();
-    void renderHearts();
-    void updateScoreTexture();
+    void clean();
 
+private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     bool running;
@@ -34,34 +29,41 @@ private:
     Ball* ball;
     std::vector<Brick> bricks;
     std::vector<PowerUp> powerUps;
-    int lives;
-    int score;
+    SDL_Texture* backgroundTexture; // Add this line
     SDL_Texture* heartTexture;
-    SDL_Texture* scoreTexture;
-    TTF_Font* font;
-    SDL_Texture* backgroundTexture;
-    static const int SCREEN_WIDTH = 800;
-    static const int SCREEN_HEIGHT = 600;
-
-    // Thêm các biến cho nút "Pause"
     SDL_Texture* pauseTexture;
-    SDL_Rect pauseRect;
-    bool isPaused;
-
-    // Thêm các biến cho ảnh "Game Over" và "Restart"
+    SDL_Texture* logoTexture;
+    SDL_Texture* scoreTexture;
+    SDL_Texture* startScreenTexture;
+    SDL_Texture* playButtonTexture;
     SDL_Texture* gameOverTexture;
     SDL_Texture* restartTexture;
+    SDL_Rect playButtonRect;
+    SDL_Rect pauseRect;
+    SDL_Rect logoRect;
     SDL_Rect gameOverRect;
     SDL_Rect restartRect;
+    TTF_Font* font;
+    Mix_Music* startMusic;
+    Mix_Music* gameMusic;
+    int lives;
+    int score;
+    bool isPaused;
     bool isGameOver;
-
-    // Thêm biến cho logo game
-    SDL_Texture* logoTexture;
-    SDL_Rect logoRect;
-
+    bool isStartScreen;
+    void LoadBackground(SDL_Renderer* renderer);
+    void RenderBackground(SDL_Renderer* renderer);
+    void CleanupBackground();
+    void renderHearts();
+    void updateScoreTexture();
     void loadGameOverTextures(SDL_Renderer* renderer);
     void renderGameOver();
-    void handlePauseEvent(const SDL_Event& e);
     void loadLogoTexture(SDL_Renderer* renderer);
+    void resetGame();
+    void initBricks();
+    void handleStartScreenEvent(const SDL_Event& e);
+    void handlePauseEvent(const SDL_Event& e);
+    void renderStartScreen();
 };
 
+#endif // GAME_H

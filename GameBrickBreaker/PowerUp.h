@@ -1,4 +1,4 @@
-#ifndef POWERUP_H
+﻿#ifndef POWERUP_H
 #define POWERUP_H
 
 #include <SDL.h>
@@ -35,3 +35,5 @@ private:
 };
 
 #endif // POWERUP_H
+
+

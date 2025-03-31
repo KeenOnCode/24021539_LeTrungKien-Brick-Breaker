@@ -4,8 +4,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
-
-Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false) {
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
     lives = 3;
     score = 0;
 
@@ -18,15 +19,19 @@ Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullpt
         std::cout << "Failed to load font: " << TTF_GetError() << std::endl;
     }
 
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cout << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
+    }
+
     updateScoreTexture();
 }
 
 Game::~Game() {
-    // Không gọi clean() nữa, vì nó có thể đã được gọi trước đó
+    clean();
 }
 
 bool Game::init() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         std::cout << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
@@ -45,7 +50,40 @@ bool Game::init() {
     updateScoreTexture();
     heartTexture = IMG_LoadTexture(renderer, "assets/image/gameOver/heart.png");
 
-    // Tải texture của nút "Pause"
+    // Load start screen textures
+    SDL_Surface* startSurface = IMG_Load("assets/image/background/start_screen.png");
+    if (!startSurface) {
+        std::cout << "Failed to load start screen image: " << IMG_GetError() << std::endl;
+        return false;
+    }
+    startScreenTexture = SDL_CreateTextureFromSurface(renderer, startSurface);
+    SDL_FreeSurface(startSurface);
+
+    SDL_Surface* playSurface = IMG_Load("assets/image/gameOver/play_button.png");
+    if (!playSurface) {
+        std::cout << "Failed to load play button image: " << IMG_GetError() << std::endl;
+        return false;
+    }
+    playButtonTexture = SDL_CreateTextureFromSurface(renderer, playSurface);
+    SDL_FreeSurface(playSurface);
+    playButtonRect = { 350, 300, 100, 50 }; // Position and size of the play button
+
+    // Load start screen music
+    startMusic = Mix_LoadMUS("assets/sound/start_music.mp3");
+    if (!startMusic) {
+        std::cout << "Failed to load start music: " << Mix_GetError() << std::endl;
+        return false;
+    }
+    Mix_PlayMusic(startMusic, -1);
+
+    // Load gameplay music
+    gameMusic = Mix_LoadMUS("assets/sound/game_music.mp3");
+    if (!gameMusic) {
+        std::cout << "Failed to load game music: " << Mix_GetError() << std::endl;
+        return false;
+    }
+
+    // Load pause button texture
     SDL_Surface* pauseSurface = IMG_Load("assets/image/gameOver/pause.png");
     if (!pauseSurface) {
         std::cout << "Failed to load pause image: " << IMG_GetError() << std::endl;
@@ -53,7 +91,7 @@ bool Game::init() {
     }
     pauseTexture = SDL_CreateTextureFromSurface(renderer, pauseSurface);
     SDL_FreeSurface(pauseSurface);
-    pauseRect = { 750, 10, 40, 40 }; // Vị trí và kích thước của nút "Pause"
+    pauseRect = { 750, 10, 40, 40 }; // Position and size of the pause button
 
     loadGameOverTextures(renderer);
     loadLogoTexture(renderer);
@@ -95,9 +133,38 @@ void Game::handleEvents() {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
             running = false;
-        handlePauseEvent(event);
-        if (!isPaused && !isGameOver) {
-            paddle->handleEvent(event);
+        if (isStartScreen) {
+            handleStartScreenEvent(event);
+        }
+        else {
+            handlePauseEvent(event);
+            if (!isPaused && !isGameOver) {
+                paddle->handleEvent(event);
+            }
+            if (isGameOver && event.type == SDL_MOUSEBUTTONDOWN) {
+                int x = event.button.x;
+                int y = event.button.y;
+                if (x >= restartRect.x && x <= restartRect.x + restartRect.w &&
+                    y >= restartRect.y && y <= restartRect.y + restartRect.h) {
+                    resetGame();
+                }
+            }
+        }
+    }
+}
+void Game::handleStartScreenEvent(const SDL_Event& e) {
+    if (e.type == SDL_MOUSEBUTTONDOWN) {
+        int x = e.button.x;
+        int y = e.button.y;
+        if (x >= playButtonRect.x && x <= playButtonRect.x + playButtonRect.w &&
+            y >= playButtonRect.y && y <= playButtonRect.y + playButtonRect.h) {
+            isStartScreen = false;
+            Mix_HaltMusic();
+            Mix_PlayMusic(gameMusic, -1); // Play the game music
+            Mix_Chunk* clickSound = Mix_LoadWAV("assets/sound/click.wav");
+            if (clickSound) {
+                Mix_PlayChannel(-1, clickSound, 0);
+            }
         }
     }
 }
@@ -117,14 +184,13 @@ void Game::handlePauseEvent(const SDL_Event& e) {
 }
 
 void Game::update() {
-    if (isPaused || isGameOver) return;
+    if (isPaused || isGameOver || isStartScreen) return;
 
     paddle->update();
     ball->update(*paddle, running, lives);
 
     if (lives <= 0) {
         isGameOver = true;
-        return;
     }
 
     for (auto& brick : bricks) {
@@ -184,43 +250,58 @@ void Game::update() {
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    RenderBackground(renderer);
-    paddle->render();
-    ball->render();
 
-    for (auto& brick : bricks) {
-        brick.Render(renderer);
+    if (isStartScreen) {
+        renderStartScreen();
     }
+    else {
+        RenderBackground(renderer);
+        paddle->render();
+        ball->render();
 
-    for (auto& powerUp : powerUps) {
-        powerUp.render();
-    }
+        for (auto& brick : bricks) {
+            brick.Render(renderer);
+        }
 
-    if (scoreTexture) {
-        SDL_Rect scoreRect = { 600, 10, 150, 40 };
-        SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
-    }
+        for (auto& powerUp : powerUps) {
+            powerUp.render();
+        }
 
-    renderHearts();
+        if (scoreTexture) {
+            SDL_Rect scoreRect = { 600, 10, 150, 40 };
+            SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
+        }
 
-    // Hiển thị nút "Pause"
-    if (pauseTexture) {
-        SDL_RenderCopy(renderer, pauseTexture, NULL, &pauseRect);
-    }
+        renderHearts();
 
-    // Hiển thị logo game nếu game đang tạm dừng
-    if (isPaused) {
-        if (logoTexture) {
-            SDL_RenderCopy(renderer, logoTexture, nullptr, &logoRect);
+        // Render pause button
+        if (pauseTexture) {
+            SDL_RenderCopy(renderer, pauseTexture, NULL, &pauseRect);
+        }
+
+        // Render game logo if paused
+        if (isPaused) {
+            if (logoTexture) {
+                SDL_RenderCopy(renderer, logoTexture, nullptr, &logoRect);
+            }
+        }
+
+        // Render game over screen if game is over
+        if (isGameOver) {
+            renderGameOver();
         }
     }
 
-    // Hiển thị màn hình "Game Over" nếu game kết thúc
-    if (isGameOver) {
-        renderGameOver();
-    }
-
     SDL_RenderPresent(renderer);
+}
+
+void Game::renderStartScreen() {
+    if (startScreenTexture) {
+        SDL_RenderCopy(renderer, startScreenTexture, NULL, NULL);
+    }
+    if (playButtonTexture) {
+        SDL_RenderCopy(renderer, playButtonTexture, NULL, &playButtonRect);
+    }
 }
 
 void Game::clean() {
@@ -252,13 +333,38 @@ void Game::clean() {
         SDL_DestroyTexture(logoTexture);
         logoTexture = nullptr;
     }
-    if (scoreTexture) SDL_DestroyTexture(scoreTexture);
-    if (font) TTF_CloseFont(font);
+    if (scoreTexture) {
+        SDL_DestroyTexture(scoreTexture);
+        scoreTexture = nullptr;
+    }
+    if (font) {
+        TTF_CloseFont(font);
+        font = nullptr; // Set font to nullptr after closing it
+    }
+    if (startScreenTexture) {
+        SDL_DestroyTexture(startScreenTexture);
+        startScreenTexture = nullptr;
+    }
+    if (playButtonTexture) {
+        SDL_DestroyTexture(playButtonTexture);
+        playButtonTexture = nullptr;
+    }
+    if (startMusic) {
+        Mix_FreeMusic(startMusic);
+        startMusic = nullptr;
+    }
+    if (gameMusic) {
+        Mix_HaltMusic(); // Stop the game music
+        Mix_FreeMusic(gameMusic);
+        gameMusic = nullptr;
+    }
     TTF_Quit();
+    Mix_Quit();
     SDL_Quit();
 }
 
 void Game::run() {
+    running = true;
     while (running) {
         handleEvents();
         update();
@@ -329,8 +435,8 @@ void Game::loadGameOverTextures(SDL_Renderer* renderer) {
     restartTexture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
 
-    gameOverRect = { 200, 150, 400, 200 }; // Vị trí và kích thước của ảnh "Game Over"
-    restartRect = { 300, 400, 200, 100 }; // Vị trí và kích thước của ảnh "Restart"
+    gameOverRect = { 200, 150, 400, 200 }; // Position and size of the game over image
+    restartRect = { 300, 400, 200, 100 }; // Position and size of the restart image
 }
 
 void Game::renderGameOver() {
@@ -351,6 +457,18 @@ void Game::loadLogoTexture(SDL_Renderer* renderer) {
     logoTexture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
 
-    logoRect = { 200, 150,600 , 200 }; // Vị trí và kích thước của logo game
+    logoRect = { 200, 150, 400, 200 }; // Position and size of the game logo
 }
 
+void Game::resetGame() {
+    lives = 3;
+    score = 0;
+    isGameOver = false;
+    initBricks();
+    updateScoreTexture();
+    delete ball;
+    ball = new Ball(renderer);
+    delete paddle;
+    paddle = new Paddle(renderer);
+    powerUps.clear();
+}
