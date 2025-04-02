@@ -31,6 +31,8 @@ private:
     std::chrono::time_point<std::chrono::steady_clock> powerUpStartTime;
     int powerUpDuration; // in seconds
 
+    std::chrono::time_point<std::chrono::steady_clock> lastBulletTime; // Thời gian của lần bắn đạn cuối cùng
+
     void loadTexture(const std::string& path);
     void resetPowerUp();
 };

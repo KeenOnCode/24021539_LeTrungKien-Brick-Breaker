@@ -6,6 +6,7 @@ Paddle::Paddle(SDL_Renderer* renderer)
     : renderer(renderer), speed(10), moveDirection(0), hasGun(false), paddleTexture(nullptr), currentPowerUp(PowerUp::NONE), powerUpDuration(0) {
     paddleRect = { 350, 550, 100, 20 };
     loadTexture("assets/image/model/paddle.png");
+    lastBulletTime = std::chrono::steady_clock::now();
 }
 
 Paddle::~Paddle() {
@@ -47,6 +48,16 @@ void Paddle::update() {
             resetPowerUp();
         }
     }
+
+    // Handle automatic shooting
+    if (hasGun) {
+        auto now = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastBulletTime).count();
+        if (elapsed >= 333) { // Shoot every 333 milliseconds (3 bullets per second)
+            shoot();
+            lastBulletTime = now;
+        }
+    }
 }
 
 void Paddle::render() {
@@ -75,11 +86,11 @@ void Paddle::applyPowerUp(PowerUp::Type type) {
     switch (type) {
     case PowerUp::INCREASE_BALL_SIZE:
         loadTexture("assets/image/model/paddle_increase_ball_size.png");
-        paddleRect.w += 20; // Increase paddle width
+        paddleRect.w += 50; // Increase paddle width
         break;
     case PowerUp::DECREASE_BALL_SIZE:
         loadTexture("assets/image/model/paddle_decrease_ball_size.png");
-        paddleRect.w -= 20; // Decrease paddle width
+        paddleRect.w -= 25; // Decrease paddle width
         break;
     case PowerUp::INCREASE_PADDLE_SPEED:
         loadTexture("assets/image/model/paddle_increase_speed.png");

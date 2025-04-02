@@ -26,7 +26,7 @@ void Ball::update(Paddle& paddle, bool& running, int& lives) {
     if (ballRect.y + ballRect.h >= 600) {
         lives--;
         if (lives <= 0) {
-            running = false;
+            running = true;
         }
         else {
             ballRect.x = 400;

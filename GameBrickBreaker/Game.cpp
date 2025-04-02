@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
     lives = 3;
     score = 0;
@@ -106,7 +106,10 @@ void Game::initBricks() {
     SDL_Texture* oneHitBrickTex = IMG_LoadTexture(renderer, "assets/image/model/brick1hit.png");
     SDL_Texture* twoHitBrickFullTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_full.png");
     SDL_Texture* twoHitBrickCrackedTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_cracked.png");
-
+    if (!oneHitBrickTex || !twoHitBrickFullTex || !twoHitBrickCrackedTex) {
+        std::cout << "Failed to load brick textures: " << IMG_GetError() << std::endl;
+        return;
+    }
     int rows = 5;
     int cols = 8;
     int brickWidth = SCREEN_WIDTH / cols - 5;
@@ -131,8 +134,9 @@ void Game::initBricks() {
 void Game::handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT)
+        if (event.type == SDL_QUIT){
             running = false;
+		}   
         if (isStartScreen) {
             handleStartScreenEvent(event);
         }
@@ -189,7 +193,7 @@ void Game::update() {
     paddle->update();
     ball->update(*paddle, running, lives);
 
-    if (lives <= 0) {
+    if (lives <= 0 && !isGameOver) {
         isGameOver = true;
     }
 
@@ -366,13 +370,20 @@ void Game::clean() {
 void Game::run() {
     running = true;
     while (running) {
-        handleEvents();
-        update();
-        render();
+        handleEvents();  // Xử lý các sự kiện
+        if (isGameOver) {
+            // Game over - không update thêm gì nữa
+            render();  // Chỉ render game over
+            SDL_Delay(16);
+            continue;
+        }
+        update();  // Cập nhật trạng thái game (chỉ khi chưa game over)
+        render();  // Render game
         SDL_Delay(16);
     }
     clean();
 }
+
 
 void Game::LoadBackground(SDL_Renderer* renderer) {
     SDL_Surface* bgSurface = IMG_Load("assets/image/background/AnhNen.png");
@@ -472,3 +483,4 @@ void Game::resetGame() {
     paddle = new Paddle(renderer);
     powerUps.clear();
 }
+ 
