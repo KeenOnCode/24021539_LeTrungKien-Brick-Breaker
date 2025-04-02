@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
     lives = 3;
     score = 0;
@@ -197,6 +197,8 @@ void Game::update() {
         isGameOver = true;
     }
 
+    bool allBricksDestroyed = true; // Add this line
+
     for (auto& brick : bricks) {
         SDL_Rect ballRect = ball->getRect();
         SDL_Rect brickRect = brick.GetRect();
@@ -214,6 +216,14 @@ void Game::update() {
                 }
             }
         }
+
+        if (!brick.IsDestroyed()) {
+            allBricksDestroyed = false; // Add this line
+        }
+    }
+
+    if (allBricksDestroyed && !isGameOver) { // Add this block
+        isGameOver = true;
     }
 
     for (auto& powerUp : powerUps) {
@@ -250,6 +260,7 @@ void Game::update() {
         }
     }
 }
+
 
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
