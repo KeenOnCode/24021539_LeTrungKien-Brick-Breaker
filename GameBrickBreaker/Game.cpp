@@ -103,13 +103,67 @@ void Game::initBricks() {
     bricks.clear();
     srand(static_cast<unsigned>(time(0)));
 
-    SDL_Texture* oneHitBrickTex = IMG_LoadTexture(renderer, "assets/image/model/brick1hit.png");
-    SDL_Texture* twoHitBrickFullTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_full.png");
-    SDL_Texture* twoHitBrickCrackedTex = IMG_LoadTexture(renderer, "assets/image/model/brick2hit_cracked.png");
-    if (!oneHitBrickTex || !twoHitBrickFullTex || !twoHitBrickCrackedTex) {
-        std::cout << "Failed to load brick textures: " << IMG_GetError() << std::endl;
-        return;
+    // Tải danh sách texture cho gạch 1 hit
+    std::vector<SDL_Texture*> oneHitBrickTextures = {   
+        IMG_LoadTexture(renderer, "assets/image/1hit/full1.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full2.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full3.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full4.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full5.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full6.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full7.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full8.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full9.png"),
+        IMG_LoadTexture(renderer, "assets/image/1hit/full10.png")
+    };
+
+    // Tải danh sách texture cho gạch 2 hit (nguyên vẹn và bị nứt)
+    std::vector<SDL_Texture*> twoHitBrickFullTextures = {
+        IMG_LoadTexture(renderer, "assets/image/2hit/full1.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full2.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full3.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full4.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full5.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full6.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full7.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full8.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full9.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/full10.png")
+    };
+
+    std::vector<SDL_Texture*> twoHitBrickCrackedTextures = {
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked1.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked2.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked3.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked4.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked5.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked6.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked7.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked8.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked9.png"),
+        IMG_LoadTexture(renderer, "assets/image/2hit/cracked10.png")
+    };
+
+    // Kiểm tra nếu bất kỳ texture nào không tải được
+    for (auto tex : oneHitBrickTextures) {
+        if (!tex) {
+            std::cout << "Failed to load one-hit brick texture: " << IMG_GetError() << std::endl;
+            return;
+        }
     }
+    for (auto tex : twoHitBrickFullTextures) {
+        if (!tex) {
+            std::cout << "Failed to load two-hit full brick texture: " << IMG_GetError() << std::endl;
+            return;
+        }
+    }
+    for (auto tex : twoHitBrickCrackedTextures) {
+        if (!tex) {
+            std::cout << "Failed to load two-hit cracked brick texture: " << IMG_GetError() << std::endl;
+            return;
+        }
+    }
+
     int rows = 5;
     int cols = 8;
     int brickWidth = SCREEN_WIDTH / cols - 5;
@@ -122,10 +176,14 @@ void Game::initBricks() {
             int y = startY + i * (brickHeight + 5);
 
             if (rand() % 2 == 0) {
-                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::ONE_HIT, oneHitBrickTex);
-            }
-            else {
-                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::TWO_HIT, nullptr, twoHitBrickFullTex, twoHitBrickCrackedTex);
+                // Gạch 1 hit: Chọn ngẫu nhiên texture từ danh sách
+                SDL_Texture* randomOneHitTexture = oneHitBrickTextures[rand() % oneHitBrickTextures.size()];
+                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::ONE_HIT, randomOneHitTexture);
+            } else {
+                // Gạch 2 hit: Chọn ngẫu nhiên texture từ danh sách
+                SDL_Texture* randomTwoHitFullTexture = twoHitBrickFullTextures[rand() % twoHitBrickFullTextures.size()];
+                SDL_Texture* randomTwoHitCrackedTexture = twoHitBrickCrackedTextures[rand() % twoHitBrickCrackedTextures.size()];
+                bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::TWO_HIT, nullptr, randomTwoHitFullTexture, randomTwoHitCrackedTexture);
             }
         }
     }
@@ -373,6 +431,16 @@ void Game::clean() {
         Mix_FreeMusic(gameMusic);
         gameMusic = nullptr;
     }
+    for (auto tex : oneHitBrickTextures) {
+        SDL_DestroyTexture(tex);
+    }
+    for (auto tex : twoHitBrickFullTextures) {
+        SDL_DestroyTexture(tex);
+    }
+    for (auto tex : twoHitBrickCrackedTextures) {
+        SDL_DestroyTexture(tex);
+    }
+
     TTF_Quit();
     Mix_Quit();
     SDL_Quit();

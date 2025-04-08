@@ -64,6 +64,10 @@ private:
     void handleStartScreenEvent(const SDL_Event& e);
     void handlePauseEvent(const SDL_Event& e);
     void renderStartScreen();
+    std::vector<SDL_Texture*> oneHitBrickTextures;
+    std::vector<SDL_Texture*> twoHitBrickFullTextures;
+    std::vector<SDL_Texture*> twoHitBrickCrackedTextures;
+
 };
 
 #endif // GAME_H
