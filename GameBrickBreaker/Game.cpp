@@ -75,7 +75,12 @@ bool Game::init() {
         return false;
     }
     Mix_PlayMusic(startMusic, -1);
-
+	// Load brick hit sound
+    brickHitSound = Mix_LoadWAV("assets/sound/brick_hit.wav");
+    if (!brickHitSound) {
+        std::cout << "Failed to load brick hit sound: " << Mix_GetError() << std::endl;
+        return false;
+    }
     // Load gameplay music
     gameMusic = Mix_LoadMUS("assets/sound/game_music.mp3");
     if (!gameMusic) {
@@ -273,6 +278,9 @@ void Game::update() {
                     powerUps.push_back(PowerUp(renderer, brick.getPowerUpType(), brickRect.x, brickRect.y));
                 }
             }
+
+            // Phát âm thanh khi bóng va chạm gạch
+            Mix_PlayChannel(-1, brickHitSound, 0);
         }
 
         if (!brick.IsDestroyed()) {
@@ -430,6 +438,10 @@ void Game::clean() {
         Mix_HaltMusic(); // Stop the game music
         Mix_FreeMusic(gameMusic);
         gameMusic = nullptr;
+    }
+    if (brickHitSound) {
+        Mix_FreeChunk(brickHitSound);
+        brickHitSound = nullptr;
     }
     for (auto tex : oneHitBrickTextures) {
         SDL_DestroyTexture(tex);
