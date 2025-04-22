@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include <random>
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
@@ -75,12 +76,7 @@ bool Game::init() {
         return false;
     }
     Mix_PlayMusic(startMusic, -1);
-	// Load brick hit sound
-    brickHitSound = Mix_LoadWAV("assets/sound/brick_hit.wav");
-    if (!brickHitSound) {
-        std::cout << "Failed to load brick hit sound: " << Mix_GetError() << std::endl;
-        return false;
-    }
+
     // Load gameplay music
     gameMusic = Mix_LoadMUS("assets/sound/game_music.mp3");
     if (!gameMusic) {
@@ -169,14 +165,23 @@ void Game::initBricks() {
         }
     }
 
-    int rows = 5;
     int cols = 8;
     int brickWidth = SCREEN_WIDTH / cols - 5;
     int brickHeight = 30;
     int startY = 50;
+    SDL_Rect paddleRect = paddle->getRect();
+    int paddleY = paddleRect.y;
+    int safeMargin = paddleRect.h + 150; // Khoảng cách an toàn so với paddle
+    int maxAllowedY = paddleY - safeMargin;
+    int maxRows = (maxAllowedY - startY) / (brickHeight + 5);
+	int minRows = 2; // Số hàng tối thiểu
+    if (maxRows < minRows) {
+        maxRows = minRows;
+    }
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int j = 0; j < cols; ++j) {
+        int randomRows = (rand() % maxRows) + 2;
+        for (int i = 0; i < randomRows; ++i) {
             int x = j * (brickWidth + 5);
             int y = startY + i * (brickHeight + 5);
 
@@ -184,7 +189,8 @@ void Game::initBricks() {
                 // Gạch 1 hit: Chọn ngẫu nhiên texture từ danh sách
                 SDL_Texture* randomOneHitTexture = oneHitBrickTextures[rand() % oneHitBrickTextures.size()];
                 bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::ONE_HIT, randomOneHitTexture);
-            } else {
+            }
+            else {
                 // Gạch 2 hit: Chọn ngẫu nhiên texture từ danh sách
                 SDL_Texture* randomTwoHitFullTexture = twoHitBrickFullTextures[rand() % twoHitBrickFullTextures.size()];
                 SDL_Texture* randomTwoHitCrackedTexture = twoHitBrickCrackedTextures[rand() % twoHitBrickCrackedTextures.size()];
@@ -278,9 +284,6 @@ void Game::update() {
                     powerUps.push_back(PowerUp(renderer, brick.getPowerUpType(), brickRect.x, brickRect.y));
                 }
             }
-
-            // Phát âm thanh khi bóng va chạm gạch
-            Mix_PlayChannel(-1, brickHitSound, 0);
         }
 
         if (!brick.IsDestroyed()) {
@@ -439,10 +442,6 @@ void Game::clean() {
         Mix_FreeMusic(gameMusic);
         gameMusic = nullptr;
     }
-    if (brickHitSound) {
-        Mix_FreeChunk(brickHitSound);
-        brickHitSound = nullptr;
-    }
     for (auto tex : oneHitBrickTextures) {
         SDL_DestroyTexture(tex);
     }
@@ -566,12 +565,13 @@ void Game::resetGame() {
     lives = 3;
     score = 0;
     isGameOver = false;
-    initBricks();
     updateScoreTexture();
     delete ball;
     ball = new Ball(renderer);
     delete paddle;
     paddle = new Paddle(renderer);
+    initBricks(); // Now initBricks() uses the new paddle's position
     powerUps.clear();
 }
+
  

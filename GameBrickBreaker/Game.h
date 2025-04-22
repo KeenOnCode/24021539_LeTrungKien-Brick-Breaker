@@ -46,7 +46,6 @@ private:
     TTF_Font* font;
     Mix_Music* startMusic;
     Mix_Music* gameMusic;
-    Mix_Chunk* brickHitSound;
     int lives;
     int score;
     bool isPaused;
