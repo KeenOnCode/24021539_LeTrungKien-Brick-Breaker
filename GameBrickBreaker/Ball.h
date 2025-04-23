@@ -10,6 +10,8 @@ public:
     void render();
     SDL_Rect getRect() const;
     void bounce();
+    void setPosition(int x, int y);
+    void release();
 
 private:
     SDL_Renderer* renderer;

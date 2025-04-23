@@ -22,6 +22,13 @@ public:
     void clean();
 
 private:
+	void renderWinner();
+    void drawLine(int x1, int y1, int x2, int y2, SDL_Color color);
+    float limitLineY;
+    SDL_Texture* winnerTexture;
+    SDL_Rect winnerRect;
+    bool isWinner; // Biến để kiểm tra trạng thái chiến thắng
+    bool isBallAttached;
     std::vector<SDL_Texture*> oneHitBrickTextures; // Danh sách texture cho gạch 1-hit
     std::vector<SDL_Texture*> twoHitBrickFullTextures; // Danh sách texture cho gạch 2-hit (nguyên vẹn)
 	std::vector<SDL_Texture*> twoHitBrickCrackedTextures; // Danh sách texture cho gạch 2-hit (bị nứt)

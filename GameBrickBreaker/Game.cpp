@@ -9,7 +9,7 @@
 std::chrono::time_point<std::chrono::steady_clock> lastBrickUpdateTime;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
-Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
+Game::Game() :isBallAttached(true), window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
     lives = 3;
     score = 0;
 
@@ -34,10 +34,30 @@ Game::~Game() {
 }
 
 bool Game::init() {
+    // Đặt vị trí và kích thước của hình ảnh chiến thắng
+    int originalWidth = 1296;
+    int originalHeight = 2304;
+
+    // Tính tỷ lệ scale dựa trên kích thước khung hình
+    float scale = std::min((float)SCREEN_WIDTH / originalWidth, (float)SCREEN_HEIGHT / originalHeight);
+
+    // Tính kích thước mới của ảnh
+    int scaledWidth = static_cast<int>(originalWidth * scale);
+    int scaledHeight = static_cast<int>(originalHeight * scale);
+
+    // Căn giữa ảnh trong khung hình
+    winnerRect = {
+        (SCREEN_WIDTH - scaledWidth) / 2,  // Vị trí X
+        (SCREEN_HEIGHT - scaledHeight) / 2, // Vị trí Y
+        scaledWidth,  // Chiều rộng
+        scaledHeight  // Chiều cao
+    };
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         std::cout << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
+
 
     window = SDL_CreateWindow("Brick Breaker", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) return false;
@@ -48,11 +68,20 @@ bool Game::init() {
     LoadBackground(renderer);
     paddle = new Paddle(renderer);
     ball = new Ball(renderer);
-
+    SDL_Rect paddleRect = paddle->getRect();
+    limitLineY = paddleRect.y;
     initBricks();
     updateScoreTexture();
+    isWinner = false; // Khởi tạo trạng thái chiến thắng là false
+    
     heartTexture = IMG_LoadTexture(renderer, "assets/image/gameOver/heart.png");
-
+    SDL_Surface* winnerSurface = IMG_Load("assets/image/gameOver/winner.png");
+    if (!winnerSurface) {
+        std::cout << "Failed to load winner image: " << IMG_GetError() << std::endl;
+        return false;
+    }
+    winnerTexture = SDL_CreateTextureFromSurface(renderer, winnerSurface);
+    SDL_FreeSurface(winnerSurface);
     // Load start screen textures
     SDL_Surface* startSurface = IMG_Load("assets/image/background/start_screen.png");
     if (!startSurface) {
@@ -100,6 +129,7 @@ bool Game::init() {
     loadLogoTexture(renderer);
     running = true;
     return true;
+
 }
 
 void Game::initBricks() {
@@ -190,6 +220,11 @@ void Game::initBricks() {
             int x = j * (brickWidth + 5);
             int y = startY + i * (brickHeight + 5);
 
+            // Đảm bảo gạch không vượt qua đường giới hạn
+            if (y + brickHeight >= limitLineY) {
+                continue; // Bỏ qua gạch này nếu nó vượt qua đường giới hạn
+            }
+
             if (rand() % 2 == 0) {
                 // Gạch 1 hit: Chọn ngẫu nhiên texture từ danh sách
                 SDL_Texture* randomOneHitTexture = oneHitBrickTextures[rand() % oneHitBrickTextures.size()];
@@ -205,19 +240,50 @@ void Game::initBricks() {
     }
 }
 
+void Game::renderWinner() {
+    // Hiển thị hình ảnh chiến thắng
+    if (winnerTexture) {
+        SDL_RenderCopy(renderer, winnerTexture, nullptr, &winnerRect);
+    }
+
+    // Hiển thị nút Restart
+    if (restartTexture) {
+        SDL_RenderCopy(renderer, restartTexture, nullptr, &restartRect);
+    }
+}
+
 void Game::handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT){
+        if (event.type == SDL_QUIT) {
             running = false;
-		}   
+        }
         if (isStartScreen) {
             handleStartScreenEvent(event);
+        }
+        else if (isWinner) {
+            // Xử lý sự kiện khi người chơi chiến thắng
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                int x = event.button.x;
+                int y = event.button.y;
+                if (x >= restartRect.x && x <= restartRect.x + restartRect.w &&
+                    y >= restartRect.y && y <= restartRect.y + restartRect.h) {
+                    resetGame(); // Reset lại game
+                }
+            }
         }
         else {
             handlePauseEvent(event);
             if (!isPaused && !isGameOver) {
                 paddle->handleEvent(event);
+
+                // Giải phóng bóng khi nhấn Enter
+                if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
+                    if (isBallAttached) {
+                        isBallAttached = false;
+                        ball->release(); // Giải phóng bóng
+                    }
+                }
             }
             if (isGameOver && event.type == SDL_MOUSEBUTTONDOWN) {
                 int x = event.button.x;
@@ -230,6 +296,7 @@ void Game::handleEvents() {
         }
     }
 }
+
 void Game::handleStartScreenEvent(const SDL_Event& e) {
     if (e.type == SDL_MOUSEBUTTONDOWN) {
         int x = e.button.x;
@@ -265,13 +332,31 @@ void Game::update() {
     if (isPaused || isGameOver || isStartScreen) return;
 
     paddle->update();
-    ball->update(*paddle, running, lives);
+    SDL_Rect paddleRect = paddle->getRect();
+    limitLineY = paddleRect.y;
+    if (isBallAttached) {
+        // Cập nhật vị trí bóng theo paddle
+        SDL_Rect paddleRect = paddle->getRect();
+        ball->setPosition(paddleRect.x + paddleRect.w / 2 - ball->getRect().w / 2, paddleRect.y - ball->getRect().h);
+    }
+    else {
+        ball->update(*paddle, running, lives);
+    }
 	// add new brick row every 5 seconds
     auto now = std::chrono::steady_clock::now();
     auto elapsedRow = std::chrono::duration_cast<std::chrono::seconds>(now - lastBrickUpdateTime).count();
-    if (elapsedRow >= 5) {
+    if (elapsedRow >= 10) {
         addNewBrickRow();
         lastBrickUpdateTime = now;
+    }
+    if (score >= 100 && !isWinner) {
+        isWinner = true;
+        Mix_HaltMusic();
+		Mix_HaltChannel(-1);// Dừng tất cả các kênh âm thanh
+        Mix_Chunk* winSound = Mix_LoadWAV("assets/sound/win.wav"); // Tùy chọn: phát âm thanh chiến thắng
+        if (winSound) {
+            Mix_PlayChannel(-1, winSound, 0);
+        }
     }
     if (lives <= 0 && !isGameOver) {
         isGameOver = true;
@@ -298,9 +383,16 @@ void Game::update() {
         }
 
         if (!brick.IsDestroyed()) {
-            allBricksDestroyed = false; // Add this line
+            allBricksDestroyed = false;
+        }
+
+        // Kiểm tra nếu viên gạch chạm vào đường giới hạn
+        if (brick.GetRect().y + brick.GetRect().h >= limitLineY) {
+            isGameOver = true; // Kích hoạt trạng thái Game Over
+            break; // Thoát khỏi vòng lặp
         }
     }
+
 
     if (allBricksDestroyed && !isGameOver) { // Add this block
         isGameOver = true;
@@ -345,13 +437,19 @@ void Game::update() {
         }
     }
 }
-
+void Game::drawLine(int x1, int y1, int x2, int y2, SDL_Color color) {
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
 
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    if (isStartScreen) {
+    if (isWinner) {
+        renderWinner(); // Hiển thị màn hình chiến thắng
+    }
+    else if (isStartScreen) {
         renderStartScreen();
     }
     else {
@@ -467,6 +565,11 @@ void Game::clean() {
     for (auto tex : twoHitBrickCrackedTextures) {
         SDL_DestroyTexture(tex);
     }
+    if (winnerTexture) {
+        SDL_DestroyTexture(winnerTexture);
+        winnerTexture = nullptr;
+    }
+
 
     TTF_Quit();
     Mix_Quit();
@@ -500,6 +603,7 @@ void Game::LoadBackground(SDL_Renderer* renderer) {
     backgroundTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
     SDL_FreeSurface(bgSurface);
 }
+
 
 void Game::RenderBackground(SDL_Renderer* renderer) {
     if (backgroundTexture) {
@@ -581,15 +685,24 @@ void Game::resetGame() {
     lives = 3;
     score = 0;
     isGameOver = false;
+    isWinner = false;
+    isBallAttached = true; // Reset trạng thái bóng gắn với paddle
     updateScoreTexture();
-    delete ball;
-    ball = new Ball(renderer);
     delete paddle;
     paddle = new Paddle(renderer);
-    paddle->resetToDefault(); // Reset paddle về trạng thái mặc định
+    delete ball;
+    ball = new Ball(renderer);
+    
+    paddle->resetToDefault();
     initBricks();
     powerUps.clear();
+
+    // Đặt bóng ở vị trí của paddle
+    SDL_Rect paddleRect = paddle->getRect();
+    ball->setPosition(paddleRect.x + paddleRect.w / 2 - ball->getRect().w / 2, paddleRect.y - ball->getRect().h);
 }
+
+
 void Game::addNewBrickRow() {
     const int cols = 8;
     const int gap = 5;

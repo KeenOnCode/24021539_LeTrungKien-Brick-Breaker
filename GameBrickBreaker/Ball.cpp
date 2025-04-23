@@ -3,7 +3,7 @@
 
 Ball::Ball(SDL_Renderer* renderer)
     : renderer(renderer), velocityX(5), velocityY(-5) {
-    ballRect = { 400, 300, 25, 25 };
+    ballRect = { 400, 550, 25, 25 };
     ballTexture = IMG_LoadTexture(renderer, "assets/image/model/ball.png");
 }
 
@@ -12,7 +12,14 @@ Ball::~Ball() {
         SDL_DestroyTexture(ballTexture);
     }
 }
-
+void Ball::setPosition(int x, int y) {
+	ballRect.x = x;
+	ballRect.y = y;
+}
+void Ball::release() {
+    velocityX = 5; // Ví dụ: đặt vận tốc ban đầu
+	velocityY = -5; // Ví dụ: đặt vận tốc ban đầu
+}
 void Ball::update(Paddle& paddle, bool& running, int& lives) {
     ballRect.x += velocityX;
     ballRect.y += velocityY;
