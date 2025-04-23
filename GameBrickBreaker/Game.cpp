@@ -35,8 +35,8 @@ Game::~Game() {
 
 bool Game::init() {
     // Đặt vị trí và kích thước của hình ảnh chiến thắng
-    int originalWidth = 1296;
-    int originalHeight = 2304;
+    int originalWidth = 2304;
+    int originalHeight = 1296;
 
     // Tính tỷ lệ scale dựa trên kích thước khung hình
     float scale = std::min((float)SCREEN_WIDTH / originalWidth, (float)SCREEN_HEIGHT / originalHeight);
@@ -349,7 +349,7 @@ void Game::update() {
         addNewBrickRow();
         lastBrickUpdateTime = now;
     }
-    if (score >= 100 && !isWinner) {
+    if (score >= 5000 && !isWinner) {
         isWinner = true;
         Mix_HaltMusic();
 		Mix_HaltChannel(-1);// Dừng tất cả các kênh âm thanh
@@ -657,7 +657,7 @@ void Game::loadGameOverTextures(SDL_Renderer* renderer) {
     SDL_FreeSurface(surface);
 
     gameOverRect = { 200, 150, 400, 200 }; // Position and size of the game over image
-    restartRect = { 300, 400, 200, 100 }; // Position and size of the restart image
+    restartRect = { 300, 450, 200, 100 }; // Position and size of the restart image
 }
 
 void Game::renderGameOver() {
