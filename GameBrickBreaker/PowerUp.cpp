@@ -8,6 +8,9 @@ PowerUp::PowerUp(SDL_Renderer* renderer, Type type, int x, int y)
     loadTexture(renderer);
     
 }
+bool PowerUp::isExpired() const {
+    return SDL_GetTicks() > activationTime + duration; // duration là thời gian hiệu lực
+}
 
 PowerUp::~PowerUp() {
     if (texture) {

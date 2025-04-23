@@ -22,6 +22,9 @@ public:
     void clean();
 
 private:
+    std::vector<SDL_Texture*> oneHitBrickTextures; // Danh sách texture cho gạch 1-hit
+    std::vector<SDL_Texture*> twoHitBrickFullTextures; // Danh sách texture cho gạch 2-hit (nguyên vẹn)
+	std::vector<SDL_Texture*> twoHitBrickCrackedTextures; // Danh sách texture cho gạch 2-hit (bị nứt)
     SDL_Window* window;
     SDL_Renderer* renderer;
     bool running;
@@ -64,9 +67,7 @@ private:
     void handleStartScreenEvent(const SDL_Event& e);
     void handlePauseEvent(const SDL_Event& e);
     void renderStartScreen();
-    std::vector<SDL_Texture*> oneHitBrickTextures;
-    std::vector<SDL_Texture*> twoHitBrickFullTextures;
-    std::vector<SDL_Texture*> twoHitBrickCrackedTextures;
+	void addNewBrickRow();
 
 };
 

@@ -48,3 +48,7 @@ bool Brick::shouldDropPowerUp() const {
 PowerUp::Type Brick::getPowerUpType() const {
     return powerUpType;
 }
+void Brick::SetRect(const SDL_Rect& newRect) {
+    rect = newRect;
+}
+

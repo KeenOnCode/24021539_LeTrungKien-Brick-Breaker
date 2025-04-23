@@ -13,6 +13,7 @@ public:
     bool IsDestroyed() const;
     bool shouldDropPowerUp() const;
     PowerUp::Type getPowerUpType() const;
+    void SetRect(const SDL_Rect& newRect);
 
 private:
     SDL_Rect rect;

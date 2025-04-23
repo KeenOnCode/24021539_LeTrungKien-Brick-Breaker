@@ -17,12 +17,16 @@ public:
     void applyPowerUp(PowerUp::Type type);
     void shoot();
     std::vector<Bullet>& getBullets();
-
+	void resetToDefault();
+	
 private:
     SDL_Renderer* renderer;
     SDL_Rect paddleRect;
     SDL_Texture* paddleTexture;
     int speed;
+	int defaultSpeed = 10; // Tốc độ mặc định
+	int width;
+	int defaultWidth = 100; // Kích thước mặc định
     int moveDirection;
     bool hasGun;
     std::vector<Bullet> bullets;

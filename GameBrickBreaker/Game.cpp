@@ -5,6 +5,8 @@
 #include <ctime>
 #include <sstream>
 #include <random>
+#include <chrono>
+std::chrono::time_point<std::chrono::steady_clock> lastBrickUpdateTime;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 Game::Game() : window(nullptr), renderer(nullptr), running(false), paddle(nullptr), ball(nullptr), isPaused(false), isGameOver(false), isStartScreen(true) {
@@ -104,8 +106,8 @@ void Game::initBricks() {
     bricks.clear();
     srand(static_cast<unsigned>(time(0)));
 
-    // Tải danh sách texture cho gạch 1 hit
-    std::vector<SDL_Texture*> oneHitBrickTextures = {   
+    // Khởi tạo danh sách texture cho gạch 1-hit
+    oneHitBrickTextures = {
         IMG_LoadTexture(renderer, "assets/image/1hit/full1.png"),
         IMG_LoadTexture(renderer, "assets/image/1hit/full2.png"),
         IMG_LoadTexture(renderer, "assets/image/1hit/full3.png"),
@@ -118,8 +120,8 @@ void Game::initBricks() {
         IMG_LoadTexture(renderer, "assets/image/1hit/full10.png")
     };
 
-    // Tải danh sách texture cho gạch 2 hit (nguyên vẹn và bị nứt)
-    std::vector<SDL_Texture*> twoHitBrickFullTextures = {
+    // Khởi tạo danh sách texture cho gạch 2-hit (nguyên vẹn và bị nứt)
+    twoHitBrickFullTextures = {
         IMG_LoadTexture(renderer, "assets/image/2hit/full1.png"),
         IMG_LoadTexture(renderer, "assets/image/2hit/full2.png"),
         IMG_LoadTexture(renderer, "assets/image/2hit/full3.png"),
@@ -132,7 +134,7 @@ void Game::initBricks() {
         IMG_LoadTexture(renderer, "assets/image/2hit/full10.png")
     };
 
-    std::vector<SDL_Texture*> twoHitBrickCrackedTextures = {
+    twoHitBrickCrackedTextures = {
         IMG_LoadTexture(renderer, "assets/image/2hit/cracked1.png"),
         IMG_LoadTexture(renderer, "assets/image/2hit/cracked2.png"),
         IMG_LoadTexture(renderer, "assets/image/2hit/cracked3.png"),
@@ -175,6 +177,9 @@ void Game::initBricks() {
     int maxAllowedY = paddleY - safeMargin;
     int maxRows = (maxAllowedY - startY) / (brickHeight + 5);
 	int minRows = 2; // Số hàng tối thiểu
+    if (maxRows > 6) {
+        maxRows = 6;
+    }
     if (maxRows < minRows) {
         maxRows = minRows;
     }
@@ -261,12 +266,18 @@ void Game::update() {
 
     paddle->update();
     ball->update(*paddle, running, lives);
-
+	// add new brick row every 5 seconds
+    auto now = std::chrono::steady_clock::now();
+    auto elapsedRow = std::chrono::duration_cast<std::chrono::seconds>(now - lastBrickUpdateTime).count();
+    if (elapsedRow >= 5) {
+        addNewBrickRow();
+        lastBrickUpdateTime = now;
+    }
     if (lives <= 0 && !isGameOver) {
         isGameOver = true;
     }
 
-    bool allBricksDestroyed = true; // Add this line
+    bool allBricksDestroyed = true;
 
     for (auto& brick : bricks) {
         SDL_Rect ballRect = ball->getRect();
@@ -297,7 +308,12 @@ void Game::update() {
 
     for (auto& powerUp : powerUps) {
         powerUp.update();
+
+        if (powerUp.isExpired()) { // Kiểm tra nếu power-up đã hết thời gian
+            paddle->resetToDefault(); // Reset paddle về trạng thái mặc định
+        }
     }
+
 
     for (auto it = powerUps.begin(); it != powerUps.end();) {
         SDL_Rect paddleRect = paddle->getRect();
@@ -570,8 +586,38 @@ void Game::resetGame() {
     ball = new Ball(renderer);
     delete paddle;
     paddle = new Paddle(renderer);
-    initBricks(); // Now initBricks() uses the new paddle's position
+    paddle->resetToDefault(); // Reset paddle về trạng thái mặc định
+    initBricks();
     powerUps.clear();
 }
+void Game::addNewBrickRow() {
+    const int cols = 8;
+    const int gap = 5;
+    const int brickHeight = 30;
+    // Dời tất cả các viên gạch hiện có xuống dưới
+    for (auto& brick : bricks) {
+        SDL_Rect r = brick.GetRect();
+        r.y += brickHeight + gap;
+        brick.SetRect(r);
+    }
+
+    // Tạo hàng mới gạch ở đầu màn hình với các gạch 1-hit có màu sắc ngẫu nhiên
+    int brickWidth = SCREEN_WIDTH / cols - gap;
+    int startY = 50; // vị trí cố định của hàng mới
+
+    for (int col = 0; col < cols; col++) {
+        int x = col * (brickWidth + gap);
+        int y = startY;
+        if (oneHitBrickTextures.empty()) {
+            // Log an error or initialize textures here
+            return;
+        }
+        // Chọn ngẫu nhiên một texture từ danh sách oneHitBrickTextures đã được tải (được lưu thành một thành viên của class Game)
+        SDL_Texture* tex = oneHitBrickTextures[rand() % oneHitBrickTextures.size()];
+        bricks.emplace_back(x, y, brickWidth, brickHeight, Brick::BrickType::ONE_HIT, tex);
+    }
+}
+
+
 
  

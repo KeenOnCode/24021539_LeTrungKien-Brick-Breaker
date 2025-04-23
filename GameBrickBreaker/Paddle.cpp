@@ -3,11 +3,12 @@
 #include <SDL_image.h>
 
 Paddle::Paddle(SDL_Renderer* renderer)
-    : renderer(renderer), speed(10), moveDirection(0), hasGun(false), paddleTexture(nullptr), currentPowerUp(PowerUp::NONE), powerUpDuration(0) {
+    : renderer(renderer), speed(10), defaultSpeed(10), moveDirection(0), hasGun(false), paddleTexture(nullptr), currentPowerUp(PowerUp::NONE), powerUpDuration(0) {
     paddleRect = { 350, 550, 100, 20 };
     loadTexture("assets/image/model/paddle.png");
     lastBulletTime = std::chrono::steady_clock::now();
 }
+
 
 Paddle::~Paddle() {
     if (paddleTexture) {
@@ -79,9 +80,13 @@ SDL_Rect Paddle::getRect() const {
 }
 
 void Paddle::applyPowerUp(PowerUp::Type type) {
+    if (currentPowerUp != PowerUp::NONE) {
+        std::cout << "⚠️ Power-up đang hoạt động, không thể áp dụng power-up mới!" << std::endl;
+        return;
+    }
     currentPowerUp = type;
     powerUpStartTime = std::chrono::steady_clock::now();
-    powerUpDuration = 5; // Set duration to 5 seconds, you can adjust this value
+	powerUpDuration = 2; // Thời gian hiệu lực của power-up (2 giây)
 
     switch (type) {
     case PowerUp::INCREASE_BALL_SIZE:
@@ -113,7 +118,11 @@ void Paddle::applyPowerUp(PowerUp::Type type) {
 void Paddle::shoot() {
     bullets.push_back(Bullet(renderer, paddleRect.x + paddleRect.w / 2, paddleRect.y));
 }
-
+void Paddle::resetToDefault() {
+    speed = defaultSpeed; // Reset tốc độ
+    width = defaultWidth; // Reset kích thước
+    // Reset các thuộc tính khác nếu cần
+}
 void Paddle::loadTexture(const std::string& path) {
     if (paddleTexture) {
         SDL_DestroyTexture(paddleTexture);

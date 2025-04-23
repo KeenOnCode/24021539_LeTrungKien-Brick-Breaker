@@ -23,7 +23,7 @@ public:
     void render();
     SDL_Rect getRect() const;
     Type getType() const;
-
+	bool isExpired() const;// Kiểm tra xem power-up đã hết thời gian hiệu lực hay chưa
 private:
     SDL_Renderer* renderer;
     SDL_Texture* texture;
@@ -31,6 +31,8 @@ private:
     Type type;
     int speed;
 
+    Uint32 activationTime; // Thời gian kích hoạt
+    Uint32 duration = 5000; // Thời gian hiệu lực (5 giây)
     void loadTexture(SDL_Renderer* renderer);
 };
 
