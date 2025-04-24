@@ -13,7 +13,8 @@ public:
         INCREASE_PADDLE_SPEED,
         DECREASE_PADDLE_SPEED,
         PADDLE_WITH_GUN,
-        BALL_AS_MISSILE
+        BALL_AS_MISSILE,
+		TRIPLE_BALL
     };
 
     PowerUp(SDL_Renderer* renderer, Type type, int x, int y);

@@ -75,7 +75,7 @@ private:
     void handlePauseEvent(const SDL_Event& e);
     void renderStartScreen();
 	void addNewBrickRow();
-
+    std::vector<Ball*> extraBalls;
 };
 
 #endif // GAME_H

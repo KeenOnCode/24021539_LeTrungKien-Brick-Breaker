@@ -335,25 +335,33 @@ void Game::update() {
     SDL_Rect paddleRect = paddle->getRect();
     limitLineY = paddleRect.y;
     if (isBallAttached) {
-        // Cập nhật vị trí bóng theo paddle
-        SDL_Rect paddleRect = paddle->getRect();
         ball->setPosition(paddleRect.x + paddleRect.w / 2 - ball->getRect().w / 2, paddleRect.y - ball->getRect().h);
     }
     else {
         ball->update(*paddle, running, lives);
+        // Added respawn logic: if the ball is below screen and lives remain, reattach it to the paddle.
+        if (ball->getRect().y > SCREEN_HEIGHT && lives > 0) {
+            isBallAttached = true;
+            SDL_Rect paddleRect = paddle->getRect();
+            ball->setPosition(paddleRect.x + paddleRect.w / 2 - ball->getRect().w / 2, paddleRect.y - ball->getRect().h);
+        }
     }
-	// add new brick row every 5 seconds
+    // Update extra balls if any
+    for (auto extraBall : extraBalls) {
+        extraBall->update(*paddle, running, lives);
+    }
+
     auto now = std::chrono::steady_clock::now();
     auto elapsedRow = std::chrono::duration_cast<std::chrono::seconds>(now - lastBrickUpdateTime).count();
     if (elapsedRow >= 10) {
         addNewBrickRow();
         lastBrickUpdateTime = now;
     }
-    if (score >= 5000 && !isWinner) {
+    if (score >= 10000 && !isWinner) {
         isWinner = true;
         Mix_HaltMusic();
-		Mix_HaltChannel(-1);// Dừng tất cả các kênh âm thanh
-        Mix_Chunk* winSound = Mix_LoadWAV("assets/sound/win.wav"); // Tùy chọn: phát âm thanh chiến thắng
+        Mix_HaltChannel(-1);
+        Mix_Chunk* winSound = Mix_LoadWAV("assets/sound/win.wav");
         if (winSound) {
             Mix_PlayChannel(-1, winSound, 0);
         }
@@ -362,57 +370,76 @@ void Game::update() {
         isGameOver = true;
     }
 
+    // Combine the primary and extra balls for brick collision
+    std::vector<Ball*> allBalls;
+    allBalls.push_back(ball);
+    for (auto extraBall : extraBalls) {
+        allBalls.push_back(extraBall);
+    }
     bool allBricksDestroyed = true;
-
     for (auto& brick : bricks) {
-        SDL_Rect ballRect = ball->getRect();
         SDL_Rect brickRect = brick.GetRect();
-
-        if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
-            ball->bounce();
-
-            bool destroyed = brick.Hit();
-            if (destroyed) {
-                score += 100;
-                updateScoreTexture();
-
-                if (brick.shouldDropPowerUp()) {
-                    powerUps.push_back(PowerUp(renderer, brick.getPowerUpType(), brickRect.x, brickRect.y));
+        for (auto currBall : allBalls) {
+            SDL_Rect ballRect = currBall->getRect();
+            if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
+                currBall->bounce();
+                bool destroyed = brick.Hit();
+                if (destroyed) {
+                    score += 100;
+                    updateScoreTexture();
+                    if (brick.shouldDropPowerUp()) {
+                        powerUps.push_back(PowerUp(renderer, brick.getPowerUpType(), brickRect.x, brickRect.y));
+                    }
                 }
             }
         }
-
         if (!brick.IsDestroyed()) {
             allBricksDestroyed = false;
         }
-
-        // Kiểm tra nếu viên gạch chạm vào đường giới hạn
-        if (brick.GetRect().y + brick.GetRect().h >= limitLineY) {
-            isGameOver = true; // Kích hoạt trạng thái Game Over
-            break; // Thoát khỏi vòng lặp
+        // Check if any brick reaches the lower limit
+        int gameOverMargin = 10;
+        if (brick.GetRect().y + brick.GetRect().h >= limitLineY- gameOverMargin ) {
+            isGameOver = true;
+            break;
         }
     }
-
-
-    if (allBricksDestroyed && !isGameOver) { // Add this block
+    if (allBricksDestroyed && !isGameOver) {
         isGameOver = true;
     }
 
     for (auto& powerUp : powerUps) {
         powerUp.update();
-
-        if (powerUp.isExpired()) { // Kiểm tra nếu power-up đã hết thời gian
-            paddle->resetToDefault(); // Reset paddle về trạng thái mặc định
+        if (powerUp.isExpired()) {
+            paddle->resetToDefault();
         }
     }
-
-
+    // Process power-up collection. For triple-ball power-up, spawn two extra balls.
+    // Process power-up collection. For triple-ball power-up, spawn extra balls if total is less than 3.
     for (auto it = powerUps.begin(); it != powerUps.end();) {
         SDL_Rect paddleRect = paddle->getRect();
         SDL_Rect powerUpRect = it->getRect();
-
         if (SDL_HasIntersection(&paddleRect, &powerUpRect)) {
-            paddle->applyPowerUp(it->getType());
+            if (it->getType() == PowerUp::TRIPLE_BALL) {
+                // Release the primary ball if it is attached
+                if (isBallAttached) {
+                    isBallAttached = false;
+                    ball->release();
+                }
+                // Calculate total balls count: primary ball + extra balls
+                int currentBallCount = 1 + extraBalls.size();
+                int ballsToSpawn = 3 - currentBallCount;  // Maximum total allowed is 3
+                for (int i = 0; i < ballsToSpawn; i++) {
+                    Ball* extra = new Ball(renderer);
+                    extra->setPosition(
+                        paddleRect.x + paddleRect.w / 2 - extra->getRect().w / 2,
+                        paddleRect.y - extra->getRect().h
+                    );
+                    extraBalls.push_back(extra);
+                }
+            }
+            else {
+                paddle->applyPowerUp(it->getType());
+            }
             it = powerUps.erase(it);
         }
         else {
@@ -420,10 +447,10 @@ void Game::update() {
         }
     }
 
+
     for (auto& bullet : paddle->getBullets()) {
         bullet.update();
     }
-
     for (auto& bullet : paddle->getBullets()) {
         SDL_Rect bulletRect = bullet.getRect();
         for (auto& brick : bricks) {
@@ -437,6 +464,7 @@ void Game::update() {
         }
     }
 }
+
 void Game::drawLine(int x1, int y1, int x2, int y2, SDL_Color color) {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
@@ -447,7 +475,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     if (isWinner) {
-        renderWinner(); // Hiển thị màn hình chiến thắng
+        renderWinner(); // Display win screen
     }
     else if (isStartScreen) {
         renderStartScreen();
@@ -456,42 +484,40 @@ void Game::render() {
         RenderBackground(renderer);
         paddle->render();
         ball->render();
-
+        // Render extra balls if any
+        for (auto extraBall : extraBalls) {
+            extraBall->render();
+        }
         for (auto& brick : bricks) {
             brick.Render(renderer);
         }
-
         for (auto& powerUp : powerUps) {
             powerUp.render();
         }
-
         if (scoreTexture) {
             SDL_Rect scoreRect = { 600, 10, 150, 40 };
             SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
         }
-
         renderHearts();
-
-        // Render pause button
         if (pauseTexture) {
             SDL_RenderCopy(renderer, pauseTexture, NULL, &pauseRect);
         }
-
-        // Render game logo if paused
         if (isPaused) {
             if (logoTexture) {
                 SDL_RenderCopy(renderer, logoTexture, nullptr, &logoRect);
             }
         }
-
-        // Render game over screen if game is over
         if (isGameOver) {
             renderGameOver();
         }
+        // Vẽ limit line màu đỏ sau khi render các thành phần khác
+        drawLine(0, static_cast<int>(limitLineY), SCREEN_WIDTH, static_cast<int>(limitLineY), { 255,255, 255, 255 });
+
     }
 
     SDL_RenderPresent(renderer);
 }
+
 
 void Game::renderStartScreen() {
     if (startScreenTexture) {
@@ -511,6 +537,11 @@ void Game::clean() {
         delete ball;
         ball = nullptr;
     }
+    // Clean extra balls
+    for (auto extraBall : extraBalls) {
+        delete extraBall;
+    }
+    extraBalls.clear();
     if (renderer) {
         SDL_DestroyRenderer(renderer);
         renderer = nullptr;
@@ -686,21 +717,27 @@ void Game::resetGame() {
     score = 0;
     isGameOver = false;
     isWinner = false;
-    isBallAttached = true; // Reset trạng thái bóng gắn với paddle
+    isBallAttached = true; // Reset ball attachment state
     updateScoreTexture();
     delete paddle;
     paddle = new Paddle(renderer);
     delete ball;
     ball = new Ball(renderer);
-    
+    // Delete any extra balls from previous game
+    for (auto extraBall : extraBalls) {
+        delete extraBall;
+    }
+    extraBalls.clear();
+
     paddle->resetToDefault();
     initBricks();
     powerUps.clear();
 
-    // Đặt bóng ở vị trí của paddle
+    // Position the primary ball at paddle top
     SDL_Rect paddleRect = paddle->getRect();
     ball->setPosition(paddleRect.x + paddleRect.w / 2 - ball->getRect().w / 2, paddleRect.y - ball->getRect().h);
 }
+
 
 
 void Game::addNewBrickRow() {

@@ -4,8 +4,8 @@
 Brick::Brick(int x, int y, int width, int height, BrickType type, SDL_Texture* oneHitTexture, SDL_Texture* twoHitFullTexture, SDL_Texture* twoHitCrackedTexture)
     : rect{ x, y, width, height }, type(type), destroyed(false), oneHitTexture(oneHitTexture), twoHitFullTexture(twoHitFullTexture), twoHitCrackedTexture(twoHitCrackedTexture) {
     hitPoints = (type == BrickType::TWO_HIT) ? 2 : 1;
-    hasPowerUp = (rand() % 2 == 0);
-    powerUpType = static_cast<PowerUp::Type>(rand() % 7);
+    hasPowerUp = (rand() % 1 == 0);
+    powerUpType = static_cast<PowerUp::Type>(rand() % 8);
 }
 
 void Brick::Render(SDL_Renderer* renderer) {
