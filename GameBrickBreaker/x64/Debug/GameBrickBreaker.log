@@ -1,0 +1,26 @@
+﻿  Ball.cpp
+  Brick.cpp
+  Bullet.cpp
+  Game.cpp
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(72,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(336,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(429,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(676,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(684,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Game.cpp(706,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+  GameBrickBreaker.cpp
+  Paddle.cpp
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u26A0' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\uFE0F' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u0111' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u1EA1' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u1ED9' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u1EC3' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u1EE5' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(84,22): warning C4566: character represented by universal-character-name '\u1EDB' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(132,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\Paddle.cpp(139,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+  PowerUp.cpp
+C:\Users\LAPTOP\source\repos\GameBrickBreaker\GameBrickBreaker\PowerUp.cpp(48,22): warning C4566: character represented by universal-character-name '\u274C' cannot be represented in the current code page (1252)
+  Generating Code...
+  GameBrickBreaker.vcxproj -> C:\Users\LAPTOP\source\repos\GameBrickBreaker\x64\Debug\GameBrickBreaker.exe
