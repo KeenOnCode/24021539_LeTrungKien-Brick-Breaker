@@ -3,24 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Paddle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Brick.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Game.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\PowerUp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Paddle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Game.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Brick.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -31,28 +35,24 @@
       "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Ball.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\PowerUp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Paddle.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\GameBrickBreaker.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\GameBrickBreaker.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Brick.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Bullet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Bullet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\Paddle.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\PowerUp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\GameBrickBreaker.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E7A405F9-B621-44FA-80FF-886FB1F14C3D}|GameBrickBreaker\\GameBrickBreaker.vcxproj|solutionrelative:GameBrickBreaker\\GameBrickBreaker.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,87 +62,95 @@
       "DocumentGroups": [
         {
           "DockedHeight": 312,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Game.cpp",
               "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.cpp",
               "RelativeDocumentMoniker": "GameBrickBreaker\\Game.cpp",
               "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.cpp",
               "RelativeToolTip": "GameBrickBreaker\\Game.cpp",
-              "ViewState": "AgIAAKABAAAAAAAAAADwv7oBAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAB8DAAAAAAAAAAAwwEUDAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-12T09:12:59.231Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Game.h",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Game.h",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h",
+              "RelativeToolTip": "GameBrickBreaker\\Game.h",
+              "ViewState": "AgIAAGwAAAAAAAAAAADwv4UAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-12T09:03:35.029Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Paddle.cpp",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Paddle.cpp",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp",
+              "RelativeToolTip": "GameBrickBreaker\\Paddle.cpp",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAswFMAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-12T09:12:35.777Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Game.h",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Game.h",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Game.h",
-              "RelativeToolTip": "GameBrickBreaker\\Game.h",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAAAE0AAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-12T09:03:35.029Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Paddle.cpp",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Paddle.cpp",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.cpp",
-              "RelativeToolTip": "GameBrickBreaker\\Paddle.cpp",
-              "ViewState": "AgIAAJoAAAAAAAAAAAAawKYAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-12T09:12:35.777Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "PowerUp.h",
               "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.h",
               "RelativeDocumentMoniker": "GameBrickBreaker\\PowerUp.h",
               "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.h",
               "RelativeToolTip": "GameBrickBreaker\\PowerUp.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAwwDMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-26T14:33:10.92Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-26T14:33:10.92Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Ball.cpp",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.cpp",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Ball.cpp",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.cpp",
-              "RelativeToolTip": "GameBrickBreaker\\Ball.cpp",
-              "ViewState": "AgIAABIAAAAAAAAAAADwvzgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-12T09:12:28.583Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Ball.h",
               "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.h",
               "RelativeDocumentMoniker": "GameBrickBreaker\\Ball.h",
               "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.h",
               "RelativeToolTip": "GameBrickBreaker\\Ball.h",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAqwA0AAAATAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-12T09:03:55.457Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-12T09:03:55.457Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Ball.cpp",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.cpp",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Ball.cpp",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Ball.cpp",
+              "RelativeToolTip": "GameBrickBreaker\\Ball.cpp",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-12T09:12:28.583Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Brick.h",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Brick.h",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h",
+              "RelativeToolTip": "GameBrickBreaker\\Brick.h",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-12T09:04:06.463Z"
             },
             {
               "$type": "Document",
@@ -152,74 +160,61 @@
               "RelativeDocumentMoniker": "GameBrickBreaker\\Brick.cpp",
               "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.cpp",
               "RelativeToolTip": "GameBrickBreaker\\Brick.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAACcAAAAAAAAAAAAmwDYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-12T09:13:16.608Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PowerUp.cpp",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\PowerUp.cpp",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp",
-              "RelativeToolTip": "GameBrickBreaker\\PowerUp.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-27T15:19:21.609Z"
+              "WhenOpened": "2025-03-12T09:13:16.608Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "Paddle.h",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Paddle.h",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h",
-              "RelativeToolTip": "GameBrickBreaker\\Paddle.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-12T09:03:44.323Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Brick.h",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Brick.h",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Brick.h",
-              "RelativeToolTip": "GameBrickBreaker\\Brick.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-12T09:04:06.463Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Bullet.h",
-              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.h",
-              "RelativeDocumentMoniker": "GameBrickBreaker\\Bullet.h",
-              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.h",
-              "RelativeToolTip": "GameBrickBreaker\\Bullet.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-28T04:05:19.016Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
               "Title": "Bullet.cpp",
               "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.cpp",
               "RelativeDocumentMoniker": "GameBrickBreaker\\Bullet.cpp",
               "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.cpp",
               "RelativeToolTip": "GameBrickBreaker\\Bullet.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-28T04:05:26.649Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
+              "Title": "Bullet.h",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.h",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Bullet.h",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Bullet.h",
+              "RelativeToolTip": "GameBrickBreaker\\Bullet.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-28T04:05:19.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Paddle.h",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\Paddle.h",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\Paddle.h",
+              "RelativeToolTip": "GameBrickBreaker\\Paddle.h",
+              "ViewState": "AgIAACgAAAAAAAAAAAAwwDMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-12T09:03:44.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PowerUp.cpp",
+              "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp",
+              "RelativeDocumentMoniker": "GameBrickBreaker\\PowerUp.cpp",
+              "ToolTip": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\PowerUp.cpp",
+              "RelativeToolTip": "GameBrickBreaker\\PowerUp.cpp",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwEMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-27T15:19:21.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "GameBrickBreaker.cpp",
               "DocumentMoniker": "C:\\Users\\LAPTOP\\source\\repos\\GameBrickBreaker\\GameBrickBreaker\\GameBrickBreaker.cpp",
               "RelativeDocumentMoniker": "GameBrickBreaker\\GameBrickBreaker.cpp",
