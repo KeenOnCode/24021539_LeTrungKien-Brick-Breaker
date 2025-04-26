@@ -423,7 +423,7 @@ void Game::update() {
     }
 
     // Kiểm tra điều kiện chiến thắng: nếu điểm đạt 10,000 trở lên.
-    if (score >= 100 && !isWinner) {
+    if (score >= 2000 && !isWinner) {
         isWinner = true;
         Mix_HaltMusic();   // Dừng nhạc game
         Mix_HaltChannel(-1);
