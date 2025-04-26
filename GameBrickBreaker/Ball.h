@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 #include "Paddle.h"
-
+#include "Game.h"
 // Lớp Ball quản lý các thuộc tính và hành vi của bóng trong game.
 class Ball {
 public:
@@ -30,7 +30,8 @@ public:
 
     // Hàm bounce: Xử lý va chạm của bóng với các đối tượng,
     // đảo hướng vận tốc bóng khi xảy ra va chạm.
-    void bounce();
+    void bounce(const SDL_Rect& collisionObject);
+
 
     // Hàm setPosition: Đặt vị trí của bóng dựa vào tọa độ x và y.
     void setPosition(int x, int y);
@@ -38,8 +39,7 @@ public:
     // Hàm release: Giải phóng bóng ra khỏi trạng thái "gắn" (attached) khi game bắt đầu,
     // cho phép bóng di chuyển độc lập sau khi được "phóng" ra từ paddle.
     void release();
-   
-
+ 
 private:
     // Con trỏ renderer dùng để vẽ các thành phần của bóng lên cửa sổ.
     SDL_Renderer* renderer;
@@ -53,6 +53,7 @@ private:
     // velocityX và velocityY lưu trữ vận tốc của bóng theo trục X và Y.
     int velocityX;
     int velocityY;
+	
 };
 
 #endif // BALL_H

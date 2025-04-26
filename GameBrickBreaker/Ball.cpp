@@ -1,14 +1,16 @@
 ﻿#include "Ball.h"
 #include <SDL_image.h>
-
+#include "Game.h"
 // Constructor: Khởi tạo đối tượng Ball với renderer được truyền vào.
 // Ở đây, chúng ta thiết lập vận tốc ban đầu của bóng và vị trí xuất phát của nó.
+
 Ball::Ball(SDL_Renderer* renderer)
     : renderer(renderer), velocityX(5), velocityY(-5) {
     // Khởi tạo hình chữ nhật xác định vị trí (x, y) và kích thước (width, height) của bóng.
     ballRect = { 400, 550, 25, 25 };
     // Nạp texture cho bóng từ file ảnh.
     ballTexture = IMG_LoadTexture(renderer, "assets/image/model/ball.png");
+
 }
 
 // Destructor: Giải phóng các tài nguyên được cấp phát cho bóng, như texture.
@@ -16,6 +18,7 @@ Ball::~Ball() {
     if (ballTexture) {
         SDL_DestroyTexture(ballTexture);
     }
+
 }
 
 // Hàm setPosition: Đặt vị trí của bóng theo tọa độ x và y.
@@ -49,16 +52,17 @@ void Ball::update(Paddle& paddle, bool& running, int& lives) {
     }
     // Kiểm tra nếu bóng rơi xuống dưới (quá 600 - chiều cao màn hình).
     if (ballRect.y + ballRect.h >= 600) {
-        lives--; // Giảm số mạng khi bóng rơi ra ngoài
-        if (lives <= 0) {
-            running = true; // Nếu hết mạng, báo hiệu trạng thái game (có thể là game over)
-        }
-        else {
-            // Nếu còn mạng, reset vị trí bóng và đảo hướng vận tốc theo trục Y
-            ballRect.x = 400;
-            ballRect.y = 300;
-            velocityY = -velocityY;
-        }
+
+            lives--; // Giảm số mạng
+            if (lives <= 0) {
+                running = true; // Nếu hết mạng, báo hiệu trạng thái game (có thể là game over)
+            }
+     
+        // Reset vị trí bóng và đảo hướng vận tốc theo trục Y
+        ballRect.x = 400;
+        ballRect.y = 300;
+        velocityY = -velocityY;
+
     }
 
     // Lấy hình chữ nhật của paddle để kiểm tra va chạm
@@ -69,6 +73,7 @@ void Ball::update(Paddle& paddle, bool& running, int& lives) {
         ballRect.y = paddleRect.y - ballRect.h;
     }
 }
+
 
 // Hàm render: Vẽ bóng lên màn hình tại vị trí xác định bởi ballRect.
 void Ball::render() {
@@ -81,6 +86,22 @@ SDL_Rect Ball::getRect() const {
 }
 
 // Hàm bounce: Xử lý va chạm của bóng bằng cách đảo ngược vận tốc theo trục Y.
-void Ball::bounce() {
+void Ball::bounce(const SDL_Rect& collisionObject) {
+    // Tính vị trí trung tâm của bóng và đối tượng va chạm
+    int ballCenter = ballRect.x + ballRect.w / 2;
+    int objectCenter = collisionObject.x + collisionObject.w / 2;
+
+    // Tính khoảng cách tương đối giữa trung tâm bóng và đối tượng va chạm
+    int relativeHit = ballCenter - objectCenter;
+
+    // Điều chỉnh vận tốc X dựa trên khoảng cách tương đối
+    velocityX = relativeHit / 10; // Chia nhỏ để giảm độ nhạy
+    if (velocityX > 3) velocityX = 3;
+    if (velocityX < -3) velocityX = -3;
+    // Đảo hướng vận tốc Y
     velocityY = -velocityY;
+
+    // Thêm một chút ngẫu nhiên vào vận tốc X để tạo sự không đoán trước
+    velocityX += (rand() % 3 - 1); // Thêm -1, 0 hoặc 1 vào vận tốc X
 }
+

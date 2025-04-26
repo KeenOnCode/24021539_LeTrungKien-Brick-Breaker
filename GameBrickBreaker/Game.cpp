@@ -6,6 +6,7 @@
 #include <sstream>
 #include <random>
 #include <chrono>
+#include "Ball.h"
 
 // Biến toàn cục để theo dõi thời gian cập nhật hàng gạch cuối cùng
 std::chrono::time_point<std::chrono::steady_clock> lastBrickUpdateTime;
@@ -422,7 +423,7 @@ void Game::update() {
     }
 
     // Kiểm tra điều kiện chiến thắng: nếu điểm đạt 10,000 trở lên.
-    if (score >= 10000 && !isWinner) {
+    if (score >= 5000 && !isWinner) {
         isWinner = true;
         Mix_HaltMusic();   // Dừng nhạc game
         Mix_HaltChannel(-1);
@@ -448,7 +449,7 @@ void Game::update() {
         for (auto currBall : allBalls) {
             SDL_Rect ballRect = currBall->getRect();
             if (!brick.IsDestroyed() && SDL_HasIntersection(&ballRect, &brickRect)) {
-                currBall->bounce(); // Đảo hướng bóng khi va chạm với gạch.
+                currBall->bounce(paddle->getRect()); // Đảo hướng bóng khi va chạm với gạch.
                 bool destroyed = brick.Hit(); // Xử lý va chạm bằng việc giảm hitPoints của gạch.
                 if (destroyed) {
                     score += 100; // Tăng điểm khi một viên gạch bị phá hủy.
@@ -497,7 +498,7 @@ void Game::update() {
                     ball->release();
                 }
                 int currentBallCount = 1 + extraBalls.size();
-                int ballsToSpawn = 3 - currentBallCount;
+                int ballsToSpawn = 2 - currentBallCount;
                 for (int i = 0; i < ballsToSpawn; i++) {
                     Ball* extra = new Ball(renderer);
                     extra->setPosition(

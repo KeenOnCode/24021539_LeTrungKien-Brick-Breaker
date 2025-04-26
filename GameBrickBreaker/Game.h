@@ -1,13 +1,15 @@
 ﻿#ifndef GAME_H
 #define GAME_H
 
+// Forward declaration of the Ball class
+class Ball;
+
 // Bao gồm các thư viện SDL cần thiết và các module hỗ trợ
 #include <SDL.h>                // Thư viện SDL cơ bản
 #include <SDL_ttf.h>            // Hỗ trợ xử lý font chữ với TTF
 #include <SDL_mixer.h>          // Hỗ trợ âm thanh với Mixer
 #include <vector>               // Container vector để lưu trữ các đối tượng
 #include "Paddle.h"             // Định nghĩa lớp Paddle (thanh trượt)
-#include "Ball.h"               // Định nghĩa lớp Ball (bóng)
 #include "Brick.h"              // Định nghĩa lớp Brick (viên gạch)
 #include "PowerUp.h"            // Định nghĩa lớp PowerUp (hiệu ứng tăng lực, v.v...)
 
@@ -31,7 +33,6 @@ public:
     void render();
     // Hàm dọn dẹp để giải phóng tài nguyên sau khi kết thúc game
     void clean();
-
 private:
     // Các hàm xử lý nội bộ và các thành phần riêng của game
 
@@ -150,6 +151,7 @@ private:
 
     // Danh sách các bóng phụ (extra balls) nếu có, được sử dụng cho power-up triple-ball
     std::vector<Ball*> extraBalls;
+
 };
 
 #endif // GAME_H
