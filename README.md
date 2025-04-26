@@ -18,7 +18,7 @@ Dưới đây là trò chơi mà em dành thời gian ra trong **6 tuần** và 
 
 Các thư viện đi kèm: **SDL2**, **SDL2-image**, **SDL2-ttf** và **SDL2-mixer**.
 
-Đây là link video game : [Video](https://drive.google.com/file/d/1M0MhvO4apld4CrjEh1vXRqyX4mv256IC/view?usp=sharing)
+Đây là link video game : [Video](https://drive.google.com/file/d/1a69KRn6CZutNsCl55zkKRu9KXbMQ24YH/view?usp=sharing)
 
 Game chạy bằng MSVC của Microsoft
 # 1. Setup Enviroment
