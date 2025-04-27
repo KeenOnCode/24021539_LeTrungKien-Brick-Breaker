@@ -2,6 +2,8 @@
 <p align="center">
  <strong>Author</strong>: Lê Trung Kiên 
 
+![My Image](./assets/image/background/start_screen.png)
+
 </p>
 <p align="center">
  <strong> Student ID </strong>: 24021539
@@ -27,13 +29,22 @@ Game chạy bằng MSVC của Microsoft
 # 2. Tutorial
 - Tựa game sẽ có điểm mới lạ là nó sẽ tự động đùn gạch xuống phía dưới sau mỗi 8 giây nhằm tăng thêm tính thử thách
 
+![My Image](./assets/image/model/Untitled.jpg)
+
 - Người chơi sẽ có 3 mạng , trước khi hết số mạng mà đạt được 10000 điểm thì sẽ chiến thắng . Nếu hết 3 mạng thì **thua** , hoặc để gạch đẩy xuống dưới vạch kẻ ngang paddle thì cũng xem như **thua**.
 
 - Để bắt đầu , bạn cần ấn nút **play**. Sau đó nó sẽ hiện ra màn chơi , để chơi thì tiếp tục ấn **enter** , khi đó quả bóng sẽ rời khỏi paddle và bay theo logic trong game.
+![My Image](./assets/image/model/gameplaybatdau.png)
+
 - Nếu thấy đang chán nản , bạn có thể **pause** bằng cách ấn **space** hoặc nút **Stop** góc phải màn hình.
+![My Image](./assets/image/model/gameplaypause.png)
 
 - Khi chơi thì bạn có thể nghe được bài hát "Thiên lý ơi : của ca sĩ Jack J97, bên cạnh đó tựa game có xuất hiện nhiều khả năng hay ho của paddle cũng như là bóng : **nhân 3 bóng** , **tăng/giảm** tốc độ padđle/ bóng , **tàng hình** ,...
 -   Khi thua thì bạn thì game sẽ hiện ra biểu tượng gameover và restart , bạn muốn chơi lại thì ấn vào restart. Còn nếu bạn thắng thì nó cũng sẽ tương tự khi thua , chỉ khác là load biểu tượng thắng
+![My Image](./assets/image/model/gameplaywin.png)
+Khi thắng.
+![My Image](./assets/image/model/gameplayover.png)
+Khi thua.
 
 # B. Sources
 Game được em tự viết hoàn toàn với một số tham khảo từ:
